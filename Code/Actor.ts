@@ -28,7 +28,7 @@ class Actor extends Engineer.Sprite
         this._OnActorPossesed = [];
         this.Trans.Scale = new Engineer.Vertex(50,50,1);
         this.Trans.Translation = Location.Copy();
-        this._Weapon = new Weapon(10, new Projectile(null, 10, 10));
+        this._Weapon = new Weapon(Scene, 10, new Projectile(null, 20, 5));
         this.Events.MouseDown.push(this.OnClick.bind(this));
         this._Scene.Events.TimeTick.push(this.Update.bind(this));
     }
@@ -44,6 +44,7 @@ class Actor extends Engineer.Sprite
     }
     private Update() : void
     {
+        this._Weapon.Update();
         if(this._Possesed) return;
         // AI
     }

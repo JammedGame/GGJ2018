@@ -71,7 +71,7 @@ class Player
         if(this._Movement.Down) this._Scene.Trans.Translation.Y -= 5;
         if(this._Movement.Left) this._Scene.Trans.Translation.X += 5;
         if(this._Movement.Right) this._Scene.Trans.Translation.X -= 5;
-        if(!!this._Shoot) this._Actor.Weapon.Fire(this._Scene, this._Angle, this.ReprojectLocation());
+        if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation());
     }
     private ProjectActor(Actor:Actor) : void
     {

@@ -6,21 +6,45 @@ import { Projectile } from "./Projectile";
 
 class Weapon
 {
+    private _Scene:Engineer.Scene2D;
+    private _Cooldown:number;
     private _FireRate:number;
     private _Projectile:Projectile;
     private _Projectiles:Projectile[];
-    public constructor(FireRate:number, Projectile:Projectile)
+    public constructor(Scene:Engineer.Scene2D ,FireRate:number, Projectile:Projectile)
     {
+        this._Cooldown = 0;
+        this._Scene = Scene;
         this._FireRate = FireRate;
         this._Projectile = Projectile;
         this._Projectiles = [];
     }
-    public Fire(Scene:Engineer.Scene2D, Angle:number, Location:Engineer.Vertex) : void
+    public Fire(Angle:number, Location:Engineer.Vertex) : void
     {
+        if(this._Cooldown > 0)
+        {
+            this._Cooldown--;
+            return;
+        }
         let NewProjectile:Projectile = this._Projectile.Copy();
         this._Projectiles.push(NewProjectile);
         NewProjectile.Fire(Angle - 90, Location);
-        Scene.AddSceneObject(NewProjectile);
-        Scene.Events.TimeTick.push(NewProjectile.Update.bind(NewProjectile));
+        this._Scene.AddSceneObject(NewProjectile);
+        this._Cooldown = this._FireRate;
+    }
+    public Update() : void
+    {
+        for(let i = this._Projectiles.length - 1; i >= 0; i--)
+        {
+            if(this._Projectiles[i].Duration == 0)
+            {
+                this._Scene.RemoveSceneObject(this._Projectiles[i]);
+                this._Projectiles.splice(i,1);
+            }
+            else
+            {
+                this._Projectiles[i].Update();
+            }
+        }
     }
 }
