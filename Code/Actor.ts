@@ -4,6 +4,7 @@ import Engineer from "./Engineer";
 
 import { Weapon } from "./Weapon";
 import { Projectile } from "./Projectile";
+import { Behaviour } from "./Behaviour";
 
 class Actor extends Engineer.Sprite
 {
@@ -11,6 +12,7 @@ class Actor extends Engineer.Sprite
     private _Possesed:boolean;
     private _Target:Actor;
     private _Weapon:Weapon;
+    private _Behaviour:Behaviour;
     private _Scene:Engineer.Scene2D;
     private _OnActorPossesed:Function[];
     public get Dead():boolean { return this._Health <= 0; }
@@ -18,6 +20,8 @@ class Actor extends Engineer.Sprite
     public set Health(Value:number) { this._Health = Value; }
     public get Possesed():boolean { return this._Possesed; }
     public set Possesed(Value:boolean) { this._Possesed = Value; }
+    public get Target():Actor { return this._Target; }
+    public set Target(Value:Actor) { this._Target = Value; }
     public get Weapon():Weapon { return this._Weapon; }
     public get OnActorPossesed():Function[] { return this._OnActorPossesed; }
     public set OnActorPossesed(Value:Function[]) { this._OnActorPossesed = Value; }
@@ -31,6 +35,7 @@ class Actor extends Engineer.Sprite
         this._Health = 100;
         this._Scene = Scene;
         this._OnActorPossesed = [];
+        this._Behaviour = new Behaviour(null, Scene, this);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this.Trans.Scale = new Engineer.Vertex(50,50,1);
         this.Trans.Translation = Location.Copy();
@@ -56,6 +61,7 @@ class Actor extends Engineer.Sprite
         }
         this._Weapon.Update();
         if(this._Possesed) return;
+        this._Behaviour.Act();
         // AI
     }
     private Destroy() : void

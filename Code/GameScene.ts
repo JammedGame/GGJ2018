@@ -7,6 +7,7 @@ import { Actor } from "./Actor";
 
 class GameScene extends Engineer.Scene2D
 {
+    private _UpdateTarget:boolean;
     private _Pause:boolean;
     private _Player:Player;
     private _Actors:Actor[];
@@ -26,7 +27,8 @@ class GameScene extends Engineer.Scene2D
         this.AddActor(new Engineer.Vertex(500,500,0), Engineer.Color.Aqua);
         this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Purple);
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));
-        this._Player.Actor = this._Actors[1];
+        this._Player.Actor = this._Actors[0];
+        this._UpdateTarget = true;
     }
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color) : void
     {
@@ -50,6 +52,7 @@ class GameScene extends Engineer.Scene2D
         if(this._Pause) return;
         for(let i = this._Actors.length - 1; i >= 0; i--)
         {
+            if(this._UpdateTarget) this._Actors[i].Target = this._Player.Actor;
             this.CheckProjectiles(this._Actors[i]);
             this._Actors[i].Update();
             if(this._Actors[i].Dead)
