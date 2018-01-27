@@ -30,8 +30,7 @@ class GameScene extends Engineer.Scene2D
     }
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color) : void
     {
-        let NewActor = new Actor();
-        NewActor.Trans.Translation = Location;
+        let NewActor = new Actor(null, this, Location);
         NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
         NewActor.Paint = Color;
         this._Actors.push(NewActor);
