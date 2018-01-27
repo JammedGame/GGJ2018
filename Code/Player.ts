@@ -31,7 +31,7 @@ class Player
     public Init() : void
     {
         this._Shoot = false;
-        this._Speed = 5;
+        this._Speed = 4;
         this._Movement = new Movement();
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
         this._Scene.Events.KeyUp.push(this.KeyUp.bind(this));

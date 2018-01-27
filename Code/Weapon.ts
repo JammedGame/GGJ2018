@@ -28,6 +28,7 @@ class Weapon
             return;
         }
         let NewProjectile:Projectile = this._Projectile.Copy();
+        NewProjectile.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this._Projectiles.push(NewProjectile);
         NewProjectile.Fire(Angle - 90, Location, Owner);
         this._Scene.AddSceneObject(NewProjectile);

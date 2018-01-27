@@ -2,6 +2,8 @@ export { Projectile }
 
 import Engineer from "./Engineer"
 
+import { Level } from "./Level";
+
 class Projectile extends Engineer.Sprite
 {
     private _Owner:number;
@@ -39,7 +41,6 @@ class Projectile extends Engineer.Sprite
     public Init() : void
     {
         this.Trans.Scale = new Engineer.Vertex(10,10,1);
-        this.Data["Collision"] = Engineer.CollisionType.Radius2D;
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
@@ -47,11 +48,22 @@ class Projectile extends Engineer.Sprite
         this._Owner = Owner;
         this.Trans.Translation = Location.Copy();
         this.Trans.Rotation.Z = Angle;
-        this._Duration = Math.floor(3000 / this._Speed);
+        this._Duration = Math.floor(1000 / this._Speed);
     }
     public Update() : void
     {
         if(this._Duration == 0) return;
+        Level.Single.CheckCollision(this);
+        if(this.Data["Collision_Wall"].Top || this.Data["Collision_Wall"].Bottom)
+        {
+            this._Angle = 180 - this._Angle;
+            while(this._Angle < 0) this._Angle += 360;
+        }
+        else if(this.Data["Collision_Wall"].Left || this.Data["Collision_Wall"].Right)
+        {
+            this._Angle = -this._Angle;
+            while(this._Angle < 0) this._Angle += 360;
+        }
         let Direction:Engineer.Vertex = new Engineer.Vertex(0, this._Speed, 0);
         Direction.RotateZ(this._Angle);
         this.Trans.Translation.X += Direction.X;
