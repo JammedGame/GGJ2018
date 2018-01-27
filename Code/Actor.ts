@@ -4,7 +4,10 @@ import Engineer from "./Engineer";
 
 class Actor extends Engineer.Sprite
 {
+    private _Possesed:boolean;
     private _Target:Actor;
+    public get Possesed():boolean { return this._Possesed; }
+    public set Possesed(Value:boolean) { this._Possesed = Value; }
     public constructor(Old?:Actor)
     {
         super(Old);
