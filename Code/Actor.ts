@@ -5,6 +5,7 @@ import Engineer from "./Engineer";
 import { Weapon } from "./Weapon";
 import { Projectile } from "./Projectile";
 import { Behaviour } from "./Behaviour";
+import { Sniper } from "./Actors/Sniper";
 
 class Actor extends Engineer.Sprite
 {
@@ -23,6 +24,7 @@ class Actor extends Engineer.Sprite
     public get Target():Actor { return this._Target; }
     public set Target(Value:Actor) { this._Target = Value; }
     public get Weapon():Weapon { return this._Weapon; }
+    public set Weapon(Value:Weapon) { this._Weapon = Value; }
     public get OnActorPossesed():Function[] { return this._OnActorPossesed; }
     public set OnActorPossesed(Value:Function[]) { this._OnActorPossesed = Value; }
     public constructor(Old?:Actor, Scene?:Engineer.Scene2D, Location?:Engineer.Vertex)
@@ -37,7 +39,7 @@ class Actor extends Engineer.Sprite
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
-        this.Trans.Scale = new Engineer.Vertex(50,50,1);
+        this.Trans.Scale = new Engineer.Vertex(110,110,1);
         this.Trans.Translation = Location.Copy();
         this._Weapon = new Weapon(Scene, 10, new Projectile(null, 20, 5));
         this.Events.MouseDown.push(this.OnClick.bind(this));

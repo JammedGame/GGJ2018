@@ -5,6 +5,7 @@ import Engineer from "./Engineer";
 import { Player } from "./Player";
 import { Actor } from "./Actor";
 import { Level } from "./Level";
+import { Sniper } from "./Actors/Sniper";
 
 class GameScene extends Engineer.Scene2D
 {
@@ -29,13 +30,21 @@ class GameScene extends Engineer.Scene2D
         this._Level = new Level(this);
         this.AddActor(new Engineer.Vertex(500,500,0), Engineer.Color.Aqua);
         this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Purple);
+        this.AddActor(new Engineer.Vertex(800,400,0), Engineer.Color.Purple, "Sniper");
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));
         this._Player.Actor = this._Actors[0];
         this._UpdateTarget = true;
     }
-    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color) : void
+    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass:String = null) : void
     {
-        let NewActor = new Actor(null, this, Location);
+        
+        let NewActor = null;
+        if (ActorClass == "Sniper") {
+            NewActor = new Sniper(null, this, Location);
+        }
+        else {
+            NewActor = new Actor(null, this, Location);
+        }
         NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
         NewActor.Paint = Color;
         this._Actors.push(NewActor);

@@ -1,6 +1,7 @@
 export { Projectile }
 
 import Engineer from "./Engineer"
+import { SpriteSet } from "engineer-js";
 
 class Projectile extends Engineer.Sprite
 {
@@ -38,8 +39,11 @@ class Projectile extends Engineer.Sprite
     }
     public Init() : void
     {
-        this.Trans.Scale = new Engineer.Vertex(10,10,1);
+        this.Trans.Scale = new Engineer.Vertex(42,42,1);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
+        this.SpriteSets = [new SpriteSet(null, 'bullet', ['/Resources/Textures/bullet.png'])];
+        this.SetSpriteSet(0);
+
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
