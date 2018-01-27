@@ -2,6 +2,8 @@ export { Level }
 
 import Engineer from "./Engineer";
 
+import { LevelGenerator } from "./LevelGenerator";
+
 const FIELD_SIZE = 500;
 
 class Level
@@ -21,7 +23,13 @@ class Level
     {
         this._Floors = [];
         this._Walls = [];
-        this.CreateRoom({X:0, Y:0, XS:5, YS:4});
+        let LO = LevelGenerator.Generate(1);
+        console.log(LO);
+        for(let i = 0; i < LO.Rooms.length; i++)
+        {
+            this.CreateRoom(LO.Rooms[i]);
+        }
+        //this.CreateRoom({X:0, Y:0, XS:3, YS:3, WL:[1,1,1], WR:[1,1,1], WT:[1,0,1], WB:[1,1,1]});
     }
     public CheckCollision(Item:Engineer.DrawObject) : void
     {
@@ -61,12 +69,45 @@ class Level
     private CreateRoom(Room:any)
     {
         this.CreateFloor(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS, Room.YS);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS,0);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.YS,1);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE + Room.YS * FIELD_SIZE,0), Room.XS,0);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE + Room.XS * FIELD_SIZE, Room.Y * FIELD_SIZE,0), Room.YS,1);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS,0, Room.WT);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WL);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE + Room.YS * FIELD_SIZE,0), Room.XS,0, Room.WB);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE + Room.XS * FIELD_SIZE, Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WR);
     }
-    private CreateWall(Location:Engineer.Vertex, Length:number, Orientation:number) : void
+    private CreateWall(Location:Engineer.Vertex, Length:number, Orientation:number, Layout:number[]) : void
+    {
+        let Parts = this.FindParts(Layout);
+        for(let i in Parts)
+        {
+            if(Orientation == 0) this.CreateWallPart(new Engineer.Vertex(Location.X + Parts[i].S * FIELD_SIZE, Location.Y,0), Parts[i].L, Orientation);
+            else this.CreateWallPart(new Engineer.Vertex(Location.X, Location.Y + Parts[i].S * FIELD_SIZE, 0), Parts[i].L, Orientation);
+        }
+    }
+    private FindParts(Layout:number[]) : any[]
+    {
+        let Parts = [];
+        let Start = 0;
+        let Length = 0;
+        for(let i = 0; i < Layout.length; i++)
+        {
+            if(Layout[i] == 0)
+            {
+                if(Length > 0)
+                {
+                    Parts.push({S:Start, L:Length});
+                }
+                Start = i+1;
+                Length = 0;
+            }
+            else Length++;
+        }
+        if(Length > 0)
+        {
+            Parts.push({S:Start, L:Length});
+        }
+        return Parts;
+    }
+    private CreateWallPart(Location:Engineer.Vertex, Length:number, Orientation:number) : void
     {
         let Wall:Engineer.Tile = new Engineer.Tile();
         Wall.Paint = Engineer.Color.FromString("#111111");
