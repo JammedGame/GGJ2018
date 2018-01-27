@@ -2,20 +2,26 @@ export { Level }
 
 import Engineer from "./Engineer";
 
+import { Player } from "./Player";
 import { LevelGenerator } from "./LevelGenerator";
+import { Actor } from "./Actor";
+import { Sniper } from "./Actors/Sniper";
 
 const FIELD_SIZE = 500;
 
 class Level
 {
     public static Single:Level;
-
+    private _Actors:Actor[];
     private _Scene:Engineer.Scene2D;
+    private _Player:Player;
     private _Floors:Engineer.Tile[];
     private _Walls:Engineer.Tile[];
-    public constructor(Scene:Engineer.Scene2D)
+    public get Actors():Actor[] { return this._Actors; }
+    public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
         this._Scene = Scene;
+        this._Player = Player;
         this.Init();
         Level.Single = this;
     }
@@ -23,13 +29,36 @@ class Level
     {
         this._Floors = [];
         this._Walls = [];
+        this._Actors = [];
         let LO = LevelGenerator.Generate(1);
         console.log(LO);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
             this.CreateRoom(LO.Rooms[i]);
         }
-        //this.CreateRoom({X:0, Y:0, XS:3, YS:3, WL:[1,1,1], WR:[1,1,1], WT:[1,0,1], WB:[1,1,1]});
+        for(let i = 0; i < LO.Enemy.length; i++)
+        {
+            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.Purple, "Sniper");
+        }
+        this._Player.Actor = this._Actors[this._Actors.length - 1];
+    }
+    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass:String = null) : void
+    {
+        let NewActor = null;
+        if (ActorClass == "Sniper") {
+            NewActor = new Sniper(null, this._Scene, Location);
+        }
+        else {
+            NewActor = new Actor(null, this._Scene, Location);
+        }
+        NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
+        NewActor.Paint = Color;
+        this._Actors.push(NewActor);
+        this._Scene.AddSceneObject(NewActor);
+    }
+    private ActorPossesed(Actor:Actor) : void
+    {
+        this._Player.Actor = Actor;
     }
     public CheckCollision(Item:Engineer.DrawObject) : void
     {

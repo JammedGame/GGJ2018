@@ -42,6 +42,7 @@ class Projectile extends Engineer.Sprite
     public Init() : void
     {
         this.Trans.Scale = new Engineer.Vertex(42,42,1);
+        this.Paint = Engineer.Color.Black;
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this.SpriteSets = [new SpriteSet(null, 'bullet', ['/Resources/Textures/bullet.png'])];
         this.SetSpriteSet(0);
