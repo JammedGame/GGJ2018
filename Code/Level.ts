@@ -27,7 +27,20 @@ class Level
     }
     public CheckCollision(Item:Engineer.DrawObject) : void
     {
-        Engineer.CollisionUtil.CalculateObjectCollisions("Wall", Item, this._Walls);
+        //Engineer.CollisionUtil.CalculateObjectCollisions("Wall", Item, this._Walls);
+        Item.Data["Collision_Wall"] = new Engineer.CollisionValue();
+        let Collider1 = new Engineer.ColliderObject();
+        Collider1 = Engineer.Convert.DrawObjectToCollider(Item);
+        let Colliders = this._Walls;
+        for(let i = 0; i < Colliders.length; i++)
+        {
+            let Collider2 = Engineer.Convert.DrawObjectToCollider(Colliders[i]);
+            let CollisionValue = Engineer.Collision.Check(Collider1, Collider2);
+            if(CollisionValue.Collision)
+            {
+                Item.Data["Collision_Wall"] = Engineer.CollisionValue.Combine(Item.Data["Collision_Wall"], CollisionValue);
+            }
+        }
     }
     public CheckPlayerCollision(Item:Engineer.DrawObject, Location:Engineer.Vertex) : void
     {
