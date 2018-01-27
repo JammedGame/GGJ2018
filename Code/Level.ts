@@ -30,7 +30,7 @@ class Level
         this._Floors = [];
         this._Walls = [];
         this._Actors = [];
-        let LO = LevelGenerator.Generate(1);
+        let LO = LevelGenerator.Generate(5);
         console.log(LO);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
