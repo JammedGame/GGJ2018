@@ -2,6 +2,8 @@ export { Level }
 
 import Engineer from "./Engineer";
 
+const FIELD_SIZE = 500;
+
 class Level
 {
     public static Single:Level;
@@ -19,11 +21,7 @@ class Level
     {
         this._Floors = [];
         this._Walls = [];
-        this.CreateFloor(new Engineer.Vertex(300,300,0), 3,3);
-        this.CreateWall(new Engineer.Vertex(300,300,0), 3,0);
-        this.CreateWall(new Engineer.Vertex(300,300,0), 3,1);
-        this.CreateWall(new Engineer.Vertex(300,1200,0), 3,0);
-        this.CreateWall(new Engineer.Vertex(300,1200,0), 3,1);
+        this.CreateRoom({X:0, Y:0, XS:5, YS:4});
     }
     public CheckCollision(Item:Engineer.DrawObject) : void
     {
@@ -60,6 +58,14 @@ class Level
             }
         }
     }
+    private CreateRoom(Room:any)
+    {
+        this.CreateFloor(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS, Room.YS);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS,0);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.YS,1);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE + Room.YS * FIELD_SIZE,0), Room.XS,0);
+        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE + Room.XS * FIELD_SIZE, Room.Y * FIELD_SIZE,0), Room.YS,1);
+    }
     private CreateWall(Location:Engineer.Vertex, Length:number, Orientation:number) : void
     {
         let Wall:Engineer.Tile = new Engineer.Tile();
@@ -67,13 +73,13 @@ class Level
         Wall.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
         if(Orientation == 0)
         {
-            Wall.Trans.Scale = new Engineer.Vertex(Length * 300 + 50, 50, 1);
-            Wall.Trans.Translation = new Engineer.Vertex(Location.X + Length * 150 + 25, Location.Y + 25, 1);
+            Wall.Trans.Scale = new Engineer.Vertex(Length * FIELD_SIZE + 50, 50, 1);
+            Wall.Trans.Translation = new Engineer.Vertex(Location.X + Length * FIELD_SIZE/2 + 25, Location.Y + 25, 0.5);
         }
         else
         {
-            Wall.Trans.Scale = new Engineer.Vertex(50, Length * 300 + 50, 1);
-            Wall.Trans.Translation = new Engineer.Vertex(Location.Y + 25, Location.X + Length * 150 + 25, 1);
+            Wall.Trans.Scale = new Engineer.Vertex(50, Length * FIELD_SIZE + 50, 1);
+            Wall.Trans.Translation = new Engineer.Vertex(Location.X + 25, Location.Y + Length * FIELD_SIZE/2 + 25, 0.5);
         }
         this._Walls.push(Wall);
         this._Scene.AddSceneObject(Wall);
@@ -81,9 +87,9 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Paint = Engineer.Color.FromString("#2E4053");
-        Floor.Trans.Scale = new Engineer.Vertex(XSize * 300, YSize * 300, 1);
-        Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*150, Location.Y + YSize*150, 0);
+        Floor.Paint = Engineer.Color.FromString("#F0E68C");
+        Floor.Trans.Scale = new Engineer.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
+        Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
         this._Floors.push(Floor);
         this._Scene.AddSceneObject(Floor);
     }

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "engineer-js": "0.0.43",
+    "level-generator": "0.0.2",
     "ts-loader": "^2.3.2"
   }
 }
