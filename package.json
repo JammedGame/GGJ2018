@@ -1,0 +1,30 @@
+{
+    "name": "ggj2018",
+    "version": "1.0.0",
+    "description": "Project description",
+    "main": "build/public/ggj2018.js",
+    "scripts":
+    {
+      "start": "tsc && webpack-dev-server --hot",
+      "build": "tsc && webpack --watch",
+      "prod": "tsc && webpack -p",
+      "test": "cd tests"
+    },
+    "keywords":
+    [
+      "ggj2018"
+    ],
+    "author": "HHD",
+    "license": "MIT",
+    "devDependencies":
+    {
+      "typescript": "^2.4.2",
+      "webpack": "^3.5.3",
+      "webpack-dev-server": "^2.7.1"
+    },
+    "dependencies":
+    {
+      "engineer-js": "0.0.37",
+      "ts-loader": "^2.3.2"
+    }
+}

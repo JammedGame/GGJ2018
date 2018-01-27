@@ -1,0 +1,4 @@
+/node_modules
+/tscompiled
+/build/ggj2018.js
+package-lock.json
