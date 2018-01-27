@@ -76,6 +76,12 @@ class Player
         if(this._Movement.Left && !this._Actor.Data["Collision_Wall"].Left) this._Scene.Trans.Translation.X += this._Speed;
         if(this._Movement.Right && !this._Actor.Data["Collision_Wall"].Right) this._Scene.Trans.Translation.X -= this._Speed;
         if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation(), 0);
+        if (this._Movement.IsMoving()) {
+            this._Actor.UpdateSpriteSetByName('walking');
+        }
+        else {
+            this._Actor.UpdateSpriteSetByName('idle');
+        }
     }
     private ProjectActor(Actor:Actor) : void
     {
@@ -108,4 +114,8 @@ class Movement
     public Down:boolean;
     public Left:boolean;
     public Right:boolean;
+
+    public IsMoving() : boolean {
+        return (this.Up || this.Down || this.Left || this.Right);
+    }
 }

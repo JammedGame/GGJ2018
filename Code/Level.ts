@@ -81,7 +81,7 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Paint = Engineer.Color.FromString("#F0E68C");
+        Floor.Paint = Engineer.Color.FromString("#2E4053");
         Floor.Trans.Scale = new Engineer.Vertex(XSize * 300, YSize * 300, 1);
         Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*150, Location.Y + YSize*150, 0);
         this._Floors.push(Floor);

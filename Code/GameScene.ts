@@ -6,6 +6,7 @@ import { Player } from "./Player";
 import { Actor } from "./Actor";
 import { Level } from "./Level";
 import { Sniper } from "./Actors/Sniper";
+import { SpriteSet } from "engineer-js";
 
 class GameScene extends Engineer.Scene2D
 {
@@ -29,7 +30,7 @@ class GameScene extends Engineer.Scene2D
         this._Player = new Player(this);
         this._Level = new Level(this);
         this.AddActor(new Engineer.Vertex(500,500,0), Engineer.Color.Aqua);
-        this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Purple);
+        this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Olive, "Sniper");
         this.AddActor(new Engineer.Vertex(800,400,0), Engineer.Color.Purple, "Sniper");
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));
         this._Player.Actor = this._Actors[0];

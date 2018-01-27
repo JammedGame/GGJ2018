@@ -11,17 +11,21 @@ class Sniper extends Actor {
 
         super.Init(Scene, Location)
 
-        this.Weapon = new Weapon(Scene, 50, new Projectile(null, 20, 25));
+        this.Weapon = new Weapon(Scene, 50, new Projectile(null, 5, 100));
 
-        let Set = new SpriteSet(null, 'walking', [
+        let Walking = new SpriteSet(null, 'walking', [
                 '/Resources/Textures/Actors/sniper01_01.png',
-                '/Resources/Textures/Actors/sniper01_02.png'
+                 '/Resources/Textures/Actors/sniper01_02.png'
             ])
 
-        Set.Seed = 40;
+        Walking.Seed = 40;
 
-        this.SpriteSets = [Set];
+        let Idle = new SpriteSet(null, 'idle', [
+                '/Resources/Textures/Actors/sniper01_01.png',
+            ])
+        
+        this.SpriteSets = [Walking, Idle];
 
-        this.SetSpriteSet(0);  
+        this.SetSpriteSetByName('idle');  
     }
 }
