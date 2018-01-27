@@ -4,12 +4,14 @@ import Engineer from "./Engineer";
 
 import { Player } from "./Player";
 import { Actor } from "./Actor";
+import { Level } from "./Level";
 
 class GameScene extends Engineer.Scene2D
 {
     private _UpdateTarget:boolean;
     private _Pause:boolean;
     private _Player:Player;
+    private _Level:Level;
     private _Actors:Actor[];
     public get Pause():boolean { return this._Pause; }
     public set Pause(value:boolean) { this._Pause = value; }
@@ -24,6 +26,7 @@ class GameScene extends Engineer.Scene2D
         this._Actors = [];
         this.BackColor = Engineer.Color.FromRGBA(0, 0, 0, 255);
         this._Player = new Player(this);
+        this._Level = new Level(this);
         this.AddActor(new Engineer.Vertex(500,500,0), Engineer.Color.Aqua);
         this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Purple);
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));

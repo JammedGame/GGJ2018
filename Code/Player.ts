@@ -3,6 +3,7 @@ export { Player }
 import Engineer from "./Engineer";
 
 import { Actor } from "./Actor";
+import { Level } from "./Level";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -69,10 +70,11 @@ class Player
     }   
     private Update() : void
     {
-        if(this._Movement.Up) this._Scene.Trans.Translation.Y += this._Speed;
-        if(this._Movement.Down) this._Scene.Trans.Translation.Y -= this._Speed;
-        if(this._Movement.Left) this._Scene.Trans.Translation.X += this._Speed;
-        if(this._Movement.Right) this._Scene.Trans.Translation.X -= this._Speed;
+        Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
+        if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
+        if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
+        if(this._Movement.Left && !this._Actor.Data["Collision_Wall"].Left) this._Scene.Trans.Translation.X += this._Speed;
+        if(this._Movement.Right && !this._Actor.Data["Collision_Wall"].Right) this._Scene.Trans.Translation.X -= this._Speed;
         if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation(), 0);
     }
     private ProjectActor(Actor:Actor) : void
