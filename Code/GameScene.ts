@@ -69,10 +69,8 @@ class GameScene extends Engineer.Scene2D
             for(let j in this._Actors[i].Weapon.Projectiles)
             {
                 let Projectile = this._Actors[i].Weapon.Projectiles[j];
-                //let Collision = Engineer.CollisionUtil.Check(Actor, Projectile);
                 if(Engineer.Vertex.Distance(Actor.Trans.Translation, Projectile.Trans.Translation) < 30)
                 {
-                    console.log("!!");
                     if(Projectile.Owner == 0)
                     {
                         Actor.Health -= Projectile.Damage;
