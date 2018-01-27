@@ -20,12 +20,12 @@ class GameScene extends Engineer.Scene2D
     public Init(): void
     {
         this.Name = "Game";
+        this._Actors = [];
         this.BackColor = Engineer.Color.FromRGBA(0, 0, 0, 255);
         this._Player = new Player(this);
-        this._Actors = [];
         this.AddActor(new Engineer.Vertex(500,500,0), Engineer.Color.Aqua);
         this.AddActor(new Engineer.Vertex(800,800,0), Engineer.Color.Purple);
-
+        this.Events.TimeTick.push(this.SceneUpdate.bind(this));
         this._Player.Actor = this._Actors[1];
     }
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color) : void
@@ -48,6 +48,35 @@ class GameScene extends Engineer.Scene2D
     private SceneUpdate() : void
     {
         if(this._Pause) return;
-        // Update Code here
+        for(let i = this._Actors.length - 1; i >= 0; i--)
+        {
+            this.CheckProjectiles(this._Actors[i]);
+            this._Actors[i].Update();
+            if(this._Actors[i].Dead)
+            {
+                this._Actors.splice(i,1);
+            }
+        }
+    }
+    private CheckProjectiles(Actor:Actor) : void
+    {
+        if(Actor == this._Player.Actor) return;
+        for(let i in this._Actors)
+        {
+            for(let j in this._Actors[i].Weapon.Projectiles)
+            {
+                let Projectile = this._Actors[i].Weapon.Projectiles[j];
+                //let Collision = Engineer.CollisionUtil.Check(Actor, Projectile);
+                if(Engineer.Vertex.Distance(Actor.Trans.Translation, Projectile.Trans.Translation) < 30)
+                {
+                    console.log("!!");
+                    if(Projectile.Owner == 0)
+                    {
+                        Actor.Health -= Projectile.Damage;
+                        Projectile.Duration = 0;
+                    }
+                }
+            }
+        }
     }
 }

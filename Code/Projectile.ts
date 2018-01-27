@@ -4,16 +4,21 @@ import Engineer from "./Engineer"
 
 class Projectile extends Engineer.Sprite
 {
+    private _Owner:number;
     private _Speed:number;
     private _Angle:number;
     private _Damage:number;
     private _Duration:number;
+    public get Owner():number { return this._Owner; }
+    public get Damage():number { return this._Damage; }
     public get Duration():number { return this._Duration; }
+    public set Duration(Value:number) { this._Duration = Value; }
     public constructor(Old?:Projectile, Speed?:number, Damage?:number)
     {
         super(Old);
         if(Old != null)
         {
+            this._Owner = Old._Owner;
             this._Speed = Old._Speed;
             this._Angle = Old._Angle;
             this._Damage = Old._Damage;
@@ -21,6 +26,7 @@ class Projectile extends Engineer.Sprite
         }
         else
         {
+            this._Owner = 1;
             this._Speed = Speed;
             this._Damage = Damage;
             this.Init();
@@ -33,10 +39,12 @@ class Projectile extends Engineer.Sprite
     public Init() : void
     {
         this.Trans.Scale = new Engineer.Vertex(10,10,1);
+        this.Data["Collision"] = Engineer.CollisionType.Radius2D;
     }
-    public Fire(Angle:number, Location:Engineer.Vertex) : void
+    public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
         this._Angle = Angle;
+        this._Owner = Owner;
         this.Trans.Translation = Location.Copy();
         this.Trans.Rotation.Z = Angle;
         this._Duration = Math.floor(3000 / this._Speed);

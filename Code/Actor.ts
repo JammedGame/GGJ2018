@@ -7,11 +7,15 @@ import { Projectile } from "./Projectile";
 
 class Actor extends Engineer.Sprite
 {
+    private _Health:number;
     private _Possesed:boolean;
     private _Target:Actor;
     private _Weapon:Weapon;
     private _Scene:Engineer.Scene2D;
     private _OnActorPossesed:Function[];
+    public get Dead():boolean { return this._Health <= 0; }
+    public get Health():number { return this._Health; }
+    public set Health(Value:number) { this._Health = Value; }
     public get Possesed():boolean { return this._Possesed; }
     public set Possesed(Value:boolean) { this._Possesed = Value; }
     public get Weapon():Weapon { return this._Weapon; }
@@ -24,13 +28,14 @@ class Actor extends Engineer.Sprite
     }
     public Init(Scene:Engineer.Scene2D, Location:Engineer.Vertex)
     {
+        this._Health = 100;
         this._Scene = Scene;
         this._OnActorPossesed = [];
+        this.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this.Trans.Scale = new Engineer.Vertex(50,50,1);
         this.Trans.Translation = Location.Copy();
         this._Weapon = new Weapon(Scene, 10, new Projectile(null, 20, 5));
         this.Events.MouseDown.push(this.OnClick.bind(this));
-        this._Scene.Events.TimeTick.push(this.Update.bind(this));
     }
     private OnClick(Game:Engineer.Game, Args:any) : void
     {
@@ -42,10 +47,19 @@ class Actor extends Engineer.Sprite
             }
         }
     }
-    private Update() : void
+    public Update() : void
     {
+        if(this._Health <= 0)
+        {
+            this.Destroy();
+            return;
+        }
         this._Weapon.Update();
         if(this._Possesed) return;
         // AI
+    }
+    private Destroy() : void
+    {
+        this._Scene.RemoveSceneObject(this);
     }
 }

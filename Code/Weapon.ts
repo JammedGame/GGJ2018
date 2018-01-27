@@ -11,6 +11,7 @@ class Weapon
     private _FireRate:number;
     private _Projectile:Projectile;
     private _Projectiles:Projectile[];
+    public get Projectiles():Projectile[] { return this._Projectiles; }
     public constructor(Scene:Engineer.Scene2D ,FireRate:number, Projectile:Projectile)
     {
         this._Cooldown = 0;
@@ -19,7 +20,7 @@ class Weapon
         this._Projectile = Projectile;
         this._Projectiles = [];
     }
-    public Fire(Angle:number, Location:Engineer.Vertex) : void
+    public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
         if(this._Cooldown > 0)
         {
@@ -28,7 +29,7 @@ class Weapon
         }
         let NewProjectile:Projectile = this._Projectile.Copy();
         this._Projectiles.push(NewProjectile);
-        NewProjectile.Fire(Angle - 90, Location);
+        NewProjectile.Fire(Angle - 90, Location, Owner);
         this._Scene.AddSceneObject(NewProjectile);
         this._Cooldown = this._FireRate;
     }

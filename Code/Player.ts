@@ -12,6 +12,7 @@ class Player
     private _Shoot:boolean;
     private _Angle:number;
     private _Actor:Actor;
+    private _Speed:number;
     private _Movement:Movement;
     private _Scene:Engineer.Scene2D;
     public get Actor():Actor { return this._Actor; }
@@ -29,6 +30,7 @@ class Player
     public Init() : void
     {
         this._Shoot = false;
+        this._Speed = 5;
         this._Movement = new Movement();
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
         this._Scene.Events.KeyUp.push(this.KeyUp.bind(this));
@@ -67,11 +69,11 @@ class Player
     }   
     private Update() : void
     {
-        if(this._Movement.Up) this._Scene.Trans.Translation.Y += 5;
-        if(this._Movement.Down) this._Scene.Trans.Translation.Y -= 5;
-        if(this._Movement.Left) this._Scene.Trans.Translation.X += 5;
-        if(this._Movement.Right) this._Scene.Trans.Translation.X -= 5;
-        if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation());
+        if(this._Movement.Up) this._Scene.Trans.Translation.Y += this._Speed;
+        if(this._Movement.Down) this._Scene.Trans.Translation.Y -= this._Speed;
+        if(this._Movement.Left) this._Scene.Trans.Translation.X += this._Speed;
+        if(this._Movement.Right) this._Scene.Trans.Translation.X -= this._Speed;
+        if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation(), 0);
     }
     private ProjectActor(Actor:Actor) : void
     {
