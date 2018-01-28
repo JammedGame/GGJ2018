@@ -14,7 +14,7 @@ class Doctor extends Actor {
         this._Behaviour = new DoctorBehaviour(null, this._Scene, this);
         this.Health = 10;
         this.MaxHealth = 10;
-        this.Weapon = new Weapon(Scene, 0, new Projectile(null, 0, 0, 1), '/Resources/Sounds/sniper_shot.wav');
+        this.Weapon = new Weapon(Scene, 0, new Projectile(null, 0, 0, 1), 'Resources/Sounds/sniper_shot.wav');
         if(!Doctor.Sets) Doctor.InitSets();
         this.SpriteSets = Doctor.Sets;
         this.SetSpriteSetByName('idle');  
@@ -23,13 +23,13 @@ class Doctor extends Actor {
     private static InitSets()
     {
         let Walking = new SpriteSet(null, 'walking', [
-            '/Resources/Textures/Actors/doctor_01.png',
+            'Resources/Textures/Actors/doctor_01.png',
         ])
 
         Walking.Seed = 5;
 
         let Idle = new SpriteSet(null, 'idle', [
-            '/Resources/Textures/Actors/doctor_01.png',
+            'Resources/Textures/Actors/doctor_01.png',
             ])
         
         Doctor.Sets = [Walking, Idle];

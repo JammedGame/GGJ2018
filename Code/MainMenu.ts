@@ -18,7 +18,7 @@ class MainMenu extends Engineer.Scene2D
     public Init() : void
     {
         this.Name = "Menu";
-        let Buttons:any = new Engineer.TileCollection(null, ["/Resources/Textures/Play.png"]);
+        let Buttons:any = new Engineer.TileCollection(null, ["Resources/Textures/Play.png"]);
         let Play:any = new Engineer.Tile();
         Play.Name = "Play";
         Play.Collection = Buttons;

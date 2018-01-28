@@ -61,9 +61,9 @@ class Level
         this._Scene = Scene;
         this._Player = Player;
         let Back = new Engineer.Tile();
-        Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
-        this._WallColl = new Engineer.TileCollection(null, ["/Resources/Textures/wall1.png"]);
+        Back.Collection = new Engineer.TileCollection(null, ["Resources/Textures/Cosmos_2.png"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["Resources/Textures/floor1.png"]);
+        this._WallColl = new Engineer.TileCollection(null, ["Resources/Textures/wall1.png"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -143,8 +143,8 @@ class Level
     public InitSounds() : void
     {
         let sounds = [
-            '/Resources/Sounds/fightpreparebassloop.mp3',
-            '/Resources/Sounds/fightdrumloop.mp3',
+            'Resources/Sounds/fightpreparebassloop.mp3',
+            'Resources/Sounds/fightdrumloop.mp3',
         ].map(sound => new SoundObject(sound));
         
 

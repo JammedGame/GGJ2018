@@ -24,14 +24,14 @@ class Sniper extends Actor {
     private static InitSets()
     {
         let Walking = new SpriteSet(null, 'walking', [
-            '/Resources/Textures/Actors/sniper01_01.png',
-             //'/Resources/Textures/Actors/sniper01_02.png'
+            'Resources/Textures/Actors/sniper01_01.png',
+             //'Resources/Textures/Actors/sniper01_02.png'
         ])
 
         Walking.Seed = 5;
 
         let Idle = new SpriteSet(null, 'idle', [
-                '/Resources/Textures/Actors/sniper01_01.png',
+                'Resources/Textures/Actors/sniper01_01.png',
             ])
         
             Sniper.Sets = [Walking, Idle];

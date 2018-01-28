@@ -25,22 +25,22 @@ class Effects
         Effects.Single = this;
         this._ActiveSplashes = [];
         this._TileCollection = new Engineer.TileCollection(null, [
-            "/Resources/Textures/Stains/Blood_1.png",
-            "/Resources/Textures/Stains/Blood_2.png",
-            "/Resources/Textures/Stains/Blood_5.png",
+            "Resources/Textures/Stains/Blood_1.png",
+            "Resources/Textures/Stains/Blood_2.png",
+            "Resources/Textures/Stains/Blood_5.png",
         ]);
 
         this._ExplosionSet = new SpriteSet(null, 'walking', [
-            '/Resources/Textures/Explosion/Explosion_1.png',
-            '/Resources/Textures/Explosion/Explosion_2.png',
-            '/Resources/Textures/Explosion/Explosion_3.png',
-            '/Resources/Textures/Explosion/Explosion_4.png',
-            '/Resources/Textures/Explosion/Explosion_5.png',
-            '/Resources/Textures/Explosion/Explosion_6.png',
-            '/Resources/Textures/Explosion/Explosion_7.png',
-            '/Resources/Textures/Explosion/Explosion_8.png',
-            '/Resources/Textures/Explosion/Explosion_9.png',
-            '/Resources/Textures/Explosion/Explosion_10.png',
+            'Resources/Textures/Explosion/Explosion_1.png',
+            'Resources/Textures/Explosion/Explosion_2.png',
+            'Resources/Textures/Explosion/Explosion_3.png',
+            'Resources/Textures/Explosion/Explosion_4.png',
+            'Resources/Textures/Explosion/Explosion_5.png',
+            'Resources/Textures/Explosion/Explosion_6.png',
+            'Resources/Textures/Explosion/Explosion_7.png',
+            'Resources/Textures/Explosion/Explosion_8.png',
+            'Resources/Textures/Explosion/Explosion_9.png',
+            'Resources/Textures/Explosion/Explosion_10.png',
         ])
 
         this._ExplosionSet.Seed = 15;

@@ -9,7 +9,7 @@ module.exports =
   {
     path: path.resolve(__dirname, "build"),
     filename: "ggj2018.js",
-    publicPath: "/Resources/"
+    publicPath: "Resources/"
   },
   resolve:
   {

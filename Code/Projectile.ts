@@ -40,7 +40,7 @@ class Projectile extends Engineer.Tile
     {
         return new Projectile(this);
     }
-    private static Collection = new TileCollection(null, ['/Resources/Textures/bullet.png', '/Resources/Textures/sniper_bullet.png']);
+    private static Collection = new TileCollection(null, ['Resources/Textures/bullet.png', 'Resources/Textures/sniper_bullet.png']);
     public Init(Index) : void
     {
         this.Trans.Scale = new Engineer.Vertex(42,42,1);

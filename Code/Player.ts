@@ -40,7 +40,7 @@ class Player
         this._LevelComplete = LevelComplete;
         this._GameOver = GameOver;
         this.Init();
-        this._TransmissionSound = new SoundObject('/Resources/Sounds/transmission.wav');
+        this._TransmissionSound = new SoundObject('Resources/Sounds/transmission.wav');
         this._HealthBar = new HealthBar(this._Scene);
     }
     public Init() : void
