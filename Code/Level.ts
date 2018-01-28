@@ -11,6 +11,7 @@ import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
 import { SoundObject } from "engineer-js";
 import { TileCollection } from "engineer-js";
+import { Effects } from "./Effects"
 
 const FIELD_SIZE = 500;
 
@@ -24,8 +25,10 @@ class Level
     private _Floors:Engineer.Tile[];
     private _Walls:Engineer.Tile[];
     private _Props:Prop[];
+    private _Effects:Effects;
     private _UpdateTarget:boolean;
     private _FloorColl:TileCollection;
+    private _WallColl:TileCollection;
     public get Actors():Actor[] { return this._Actors; }
 
     private _Sounds: SoundObject[];
@@ -44,9 +47,11 @@ class Level
         this._Actors = [];
         this._Orphans = [];
         this._Props = [];
+        this._Effects = new Effects();
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.png"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
+        this._WallColl = new Engineer.TileCollection(null, ["/Resources/Textures/wall1.png"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -101,6 +106,7 @@ class Level
 
     public Update() : void
     {
+        this._Effects.CheckActiveSplashes();
         this.AdjustSound();
         for(let i = this._Orphans.length - 1; i >= 0; i--)
         {
@@ -137,6 +143,7 @@ class Level
                     {
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
+                        this._Effects.GenerateSplash(Actor.Trans.Translation, this._Scene);
                     }
                 }
             }
@@ -156,6 +163,8 @@ class Level
                     {
                         this._Player.Actor.Health -= Projectile.Damage / 5;
                         Projectile.Duration = 0;
+                        
+                        this._Effects.GenerateSplash(this._Player.ReprojectLocation(), this._Scene);
                     }
                 }
             }
@@ -283,7 +292,18 @@ class Level
     private CreateWallPart(Location:Engineer.Vertex, Length:number, Orientation:number) : void
     {
         let Wall:Engineer.Tile = new Engineer.Tile();
-        Wall.Paint = Engineer.Color.FromString("#111111");
+        //Wall.Paint = Engineer.Color.FromString("#111111");
+        Wall.Collection = this._WallColl;
+        Wall.Index = 0;
+        console.log(Length);
+        if(Orientation == 0)
+        {
+            Wall.RepeatX = Length * 10;
+        }
+        else
+        {
+            Wall.RepeatY = Length * 10;
+        }
         Wall.Data["Wall"] = true;
         Wall.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
         if(Orientation == 0)
@@ -302,7 +322,7 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
+        Floor.Collection = this._FloorColl;
         Floor.RepeatX = XSize;
         Floor.RepeatY = YSize;
         Floor.Index = 0;
