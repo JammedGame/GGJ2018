@@ -18,11 +18,14 @@ class Player
     private _HealthBar:HealthBar;
     private _Movement:Movement;
     private _Scene:Engineer.Scene2D;
+    private _Cooldown:number;
     public get Actor():Actor { return this._Actor; }
     public set Actor(Value:Actor)
     {
+        if(this._Cooldown != 0) return;
         if(this._Actor != null) this.ReprojectActor(this._Actor);
         this._Actor = Value;
+        this._Cooldown = 1000;
         this.ProjectActor(this._Actor);
     }
     public constructor(Scene:Engineer.Scene2D)
@@ -34,6 +37,7 @@ class Player
     {
         this._Shoot = false;
         this._Speed = 4;
+        this._Cooldown = 0;
         this._Movement = new Movement();
         this._HealthBar = new HealthBar(this._Scene);
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
@@ -73,7 +77,8 @@ class Player
     }   
     private Update() : void
     {
-        this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth);
+        if(this._Cooldown > 0) this._Cooldown--;
+        this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 1000 - this._Cooldown);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
         if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
         if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;

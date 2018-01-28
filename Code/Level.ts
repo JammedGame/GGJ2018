@@ -47,7 +47,7 @@ class Level
         this._Actors = [];
         this._Orphans = [];
         this._Props = [];
-        this._Effects = new Effects();
+        this._Effects = new Effects(this._Scene);
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
         this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
@@ -143,7 +143,7 @@ class Level
                     {
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
-                        this._Effects.GenerateSplash(Actor.Trans.Translation, this._Scene);
+                        this._Effects.GenerateSplash(Actor.Trans.Translation);
                     }
                 }
             }
@@ -164,7 +164,7 @@ class Level
                         this._Player.Actor.Health -= Projectile.Damage / 5;
                         Projectile.Duration = 0;
                         
-                        this._Effects.GenerateSplash(this._Player.ReprojectLocation(), this._Scene);
+                        this._Effects.GenerateSplash(this._Player.ReprojectLocation());
                     }
                 }
             }
