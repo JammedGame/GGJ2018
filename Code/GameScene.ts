@@ -12,6 +12,7 @@ class GameScene extends Engineer.Scene2D
     private _Pause:boolean;
     private _Player:Player;
     private _Level:Level;
+    private _Overlay:Engineer.Tile;
     public get Pause():boolean { return this._Pause; }
     public set Pause(value:boolean) { this._Pause = value; }
     public constructor()
@@ -26,6 +27,9 @@ class GameScene extends Engineer.Scene2D
         this._Player = new Player(this, this.LevelComplete.bind(this), this.GameOver.bind(this));
         this._Level = new Level(this, this._Player);
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));
+        this.Events.KeyDown.push(this.KeyDown.bind(this));
+        this.Events.KeyUp.push(this.KeyUp.bind(this));
+        this.CreateOverlay();
     }
     public LevelComplete() : void
     {
@@ -37,14 +41,31 @@ class GameScene extends Engineer.Scene2D
         this._Player.Reset();
         this._Level.ResetOver();
     }
-    private KeyPress(G: any, Args: any): void
+    private KeyDown(G: any, Args: any): void
     {
         if(this._Pause) return;
-        // Key Code here
+        if(Args.KeyCode == 72) this._Overlay.Active = true;
+    }
+    private KeyUp(G: any, Args: any): void
+    {
+        if(this._Pause) return;
+        if(Args.KeyCode == 72) this._Overlay.Active = false;
     }
     private SceneUpdate() : void
     {
         if(this._Pause) return;
         this._Level.Update();
+    }
+    private CreateOverlay() : void
+    {
+        let Tile = new Engineer.Tile();
+        Tile.Collection = new Engineer.TileCollection(null, ["Resources/Textures/overlay.png"]);
+        Tile.Index = 0;
+        Tile.Fixed = true;
+        Tile.Trans.Translation = new Engineer.Vertex(960,540,1.5);
+        Tile.Trans.Scale = new Engineer.Vertex(1520,780,1);
+        this._Overlay = Tile;
+        Tile.Active = false;
+        this.AddSceneObject(Tile);
     }
 }
