@@ -13,6 +13,7 @@ class GameScene extends Engineer.Scene2D
     private _Player:Player;
     private _Level:Level;
     private _Overlay:Engineer.Tile;
+    private _OverlayPrompt:Engineer.Tile;
     public get Pause():boolean { return this._Pause; }
     public set Pause(value:boolean) { this._Pause = value; }
     public constructor()
@@ -44,12 +45,20 @@ class GameScene extends Engineer.Scene2D
     private KeyDown(G: any, Args: any): void
     {
         if(this._Pause) return;
-        if(Args.KeyCode == 72) this._Overlay.Active = true;
+        if(Args.KeyCode == 72)
+        {
+            this._Overlay.Active = true;
+            this._OverlayPrompt.Active = false;
+        }
     }
     private KeyUp(G: any, Args: any): void
     {
         if(this._Pause) return;
-        if(Args.KeyCode == 72) this._Overlay.Active = false;
+        if(Args.KeyCode == 72)
+        {
+            this._Overlay.Active = false;
+            this._OverlayPrompt.Active = true;
+        }
     }
     private SceneUpdate() : void
     {
@@ -67,5 +76,13 @@ class GameScene extends Engineer.Scene2D
         this._Overlay = Tile;
         Tile.Active = false;
         this.AddSceneObject(Tile);
+        let Tile1 = new Engineer.Tile();
+        Tile1.Collection = new Engineer.TileCollection(null, ["Resources/Textures/hint.png"]);
+        Tile1.Index = 0;
+        Tile1.Fixed = true;
+        Tile1.Trans.Translation = new Engineer.Vertex(1600,950,1.4);
+        Tile1.Trans.Scale = new Engineer.Vertex(320,80,1);
+        this._OverlayPrompt = Tile1;
+        this.AddSceneObject(Tile1);
     }
 }
