@@ -25,6 +25,7 @@ class Level
     private _Props:Prop[];
     private _UpdateTarget:boolean;
     private _FloorColl:TileCollection;
+    private _WallColl:TileCollection;
     public get Actors():Actor[] { return this._Actors; }
     public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
@@ -42,7 +43,8 @@ class Level
         this._Props = [];
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.png"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
+        this._WallColl = new Engineer.TileCollection(null, ["/Resources/Textures/wall1.png"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -248,7 +250,18 @@ class Level
     private CreateWallPart(Location:Engineer.Vertex, Length:number, Orientation:number) : void
     {
         let Wall:Engineer.Tile = new Engineer.Tile();
-        Wall.Paint = Engineer.Color.FromString("#111111");
+        //Wall.Paint = Engineer.Color.FromString("#111111");
+        Wall.Collection = this._WallColl;
+        Wall.Index = 0;
+        console.log(Length);
+        if(Orientation == 0)
+        {
+            Wall.RepeatX = Length * 10;
+        }
+        else
+        {
+            Wall.RepeatY = Length * 10;
+        }
         Wall.Data["Wall"] = true;
         Wall.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
         if(Orientation == 0)
@@ -267,7 +280,7 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
+        Floor.Collection = this._FloorColl;
         Floor.RepeatX = XSize;
         Floor.RepeatY = YSize;
         Floor.Index = 0;
