@@ -89,4 +89,11 @@ class Effects
         explosion.Trans.Scale = new Engineer.Vertex(450, 450, 3);
         this._Scene.AddSceneObject(explosion);
     }
+    public Clear()
+    {
+        for(let i in this._ActiveSplashes)
+        {
+            this._Scene.RemoveSceneObject(this._ActiveSplashes[i]);
+        }
+    }
 }

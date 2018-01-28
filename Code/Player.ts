@@ -39,6 +39,7 @@ class Player
         this._LevelComplete = LevelComplete;
         this.Init();
         this._TransmissionSound = new SoundObject('/Resources/Sounds/transmission.wav');
+        this._HealthBar = new HealthBar(this._Scene);
     }
     public Init() : void
     {
@@ -46,7 +47,6 @@ class Player
         this._Speed = 4;
         this._Cooldown = 0;
         this._Movement = new Movement();
-        this._HealthBar = new HealthBar(this._Scene);
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
         this._Scene.Events.KeyUp.push(this.KeyUp.bind(this));
         this._Scene.Events.MouseDown.push(this.MouseDown.bind(this));
@@ -81,7 +81,15 @@ class Player
         let Zeroed = new Engineer.Vertex(Args.Location.X - SCREEN_WIDTH / 2, Args.Location.Y - SCREEN_HEIGHT / 2, 0);
         this._Angle = Engineer.Vertex.Angle(new Engineer.Vertex(0, 1, 0), Zeroed);
         this._Actor.Trans.Rotation.Z = this._Angle;;
-    }   
+    }
+    public Reset()
+    {
+        this._Shoot = false;
+        this._Speed = 4;
+        this._Cooldown = 0;
+        this._Movement = new Movement();
+        this._Actor = null;
+    }
     private Update() : void
     {
         if(this._Cooldown > 0) this._Cooldown--;

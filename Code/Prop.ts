@@ -20,6 +20,7 @@ class Prop extends Engineer.Tile
 
 class Box extends Prop
 {
+    private static Collection = new Engineer.TileCollection(null, ["/Resources/Textures/box.png"]);
     public constructor(Old?:Box, Location?:Engineer.Vertex)
     {
         super(Old, Location);
@@ -32,7 +33,7 @@ class Box extends Prop
             this.Data["Wall"] = true;
             this.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
             this.Trans.Scale = new Engineer.Vertex(150,150,0);
-            this.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/box.png"]);
+            this.Collection = Box.Collection;
             this.Index = 0;
         }
     }
@@ -40,6 +41,7 @@ class Box extends Prop
 
 class Barrel extends Prop
 {
+    private static Collection = new Engineer.TileCollection(null, ["/Resources/Textures/bure.png"]);
     public constructor(Old?:Barrel, Location?:Engineer.Vertex)
     {
         super(Old, Location);
@@ -52,7 +54,7 @@ class Barrel extends Prop
             this.Data["Wall"] = true;
             this.Data["Collision"] = Engineer.CollisionType.Radius2D;
             this.Trans.Scale = new Engineer.Vertex(100,100,0);
-            this.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/bure.png"]);
+            this.Collection = Barrel.Collection;
             this.Index = 0;
         }
     }

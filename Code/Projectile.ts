@@ -40,11 +40,12 @@ class Projectile extends Engineer.Tile
     {
         return new Projectile(this);
     }
+    private static Collection = new TileCollection(null, ['/Resources/Textures/bullet.png', '/Resources/Textures/sniper_bullet.png']);
     public Init(Index) : void
     {
         this.Trans.Scale = new Engineer.Vertex(42,42,1);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
-        this.Collection = new TileCollection(null, ['/Resources/Textures/bullet.png', '/Resources/Textures/sniper_bullet.png']);
+        this.Collection = Projectile.Collection;
         this.Index = Index;
         if(Index == 0)
         {
