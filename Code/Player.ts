@@ -29,7 +29,7 @@ class Player
         if(this._Cooldown != 0) return;
         if(this._Actor != null) this.ReprojectActor(this._Actor);
         this._Actor = Value;
-        this._Cooldown = 0;
+        this._Cooldown = 200;
         this._TransmissionSound.Play();
         this.ProjectActor(this._Actor);
         if(Value.Terminal) this._LevelComplete()
@@ -100,7 +100,7 @@ class Player
             this._GameOver();
             return;
         }
-        this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 1000 - this._Cooldown);
+        this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 200 - this._Cooldown);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
         if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
         if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;

@@ -40,8 +40,8 @@ class HealthBar
     }
     public Update(Percent, Cooldown)
     {
-        let Full = Cooldown == 1000;
-        Cooldown /= 1000;
+        let Full = Cooldown == 200;
+        Cooldown /= 200;
         let Ammount = Percent * BAR_WIDTH;
         let Offset = (1 - Percent) * BAR_WIDTH / 2;
         if(Percent < 0) Ammount = 0;
