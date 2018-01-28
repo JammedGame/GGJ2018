@@ -11,6 +11,7 @@ import { Effects } from "./Effects";
 class Actor extends Engineer.Sprite
 {
     protected _Terminal:boolean;
+    protected _Explosive:boolean;
     private _Speed:number;
     private _Health:number;
     private _MaxHealth:number;
@@ -48,6 +49,7 @@ class Actor extends Engineer.Sprite
         this._MaxHealth = 100;
         this._Speed = 3;
         this._Scene = Scene;
+        this._Explosive = false;
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
@@ -71,7 +73,7 @@ class Actor extends Engineer.Sprite
     {
         if(this._Health <= 0)
         {
-            Effects.Single.GenerateExplosion(this.Trans.Translation);
+            if(this._Explosive) Effects.Single.GenerateExplosion(this.Trans.Translation);
             this.Destroy();
             return;
         }
