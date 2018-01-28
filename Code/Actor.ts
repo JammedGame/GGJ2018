@@ -76,7 +76,7 @@ class Actor extends Engineer.Sprite
     {
         if(this._Health <= 0)
         {
-            if(this._Explosive) Effects.Single.GenerateExplosion(this.Trans.Translation);
+            Effects.Single.GenerateExplosion(this.Trans.Translation);
             this.Destroy();
             return;
         }
