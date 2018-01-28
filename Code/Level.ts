@@ -8,6 +8,7 @@ import { Actor } from "./Actor";
 import { Sniper } from "./Actors/Sniper";
 import { Heavy } from "./Actors/Heavy";
 import { Weapon } from "./Weapon";
+import { Prop, Box, Barrel } from "./Prop";
 
 const FIELD_SIZE = 500;
 
@@ -20,6 +21,7 @@ class Level
     private _Player:Player;
     private _Floors:Engineer.Tile[];
     private _Walls:Engineer.Tile[];
+    private _Props:Prop[];
     private _UpdateTarget:boolean;
     public get Actors():Actor[] { return this._Actors; }
     public constructor(Scene:Engineer.Scene2D, Player:Player)
@@ -35,6 +37,7 @@ class Level
         this._Walls = [];
         this._Actors = [];
         this._Orphans = [];
+        this._Props = [];
         let LO = LevelGenerator.Generate(5);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
@@ -44,8 +47,13 @@ class Level
         {
             this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White);
         }
+        for(let i = 0; i < LO.Props.length; i++)
+        {
+            this.AddProp(new Engineer.Vertex(LO.Props[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Props[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White);
+        }
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
+        this._Walls = this._Scene.GetObjectsWithData("Wall", true);
     }
     public Update() : void
     {
@@ -126,6 +134,26 @@ class Level
         NewActor.Paint = Color;
         this._Actors.push(NewActor);
         this._Scene.AddSceneObject(NewActor);
+    }
+    private AddProp(Location:Engineer.Vertex, Color:Engineer.Color, PropClass?:String) : void
+    {
+        let Chance = LevelGenerator.Rand(1,4);
+        if(Chance != 1) return;
+        let NewProp = null;
+        let Index = LevelGenerator.Rand(1,3);
+        if(PropClass == "Barrel") Index = 1;
+        if(PropClass == "Box") Index = 2;
+        if (Index == 1)
+        {
+            NewProp = new Barrel(null, Location);
+        }
+        else
+        {
+            NewProp = new Box(null, Location);
+        }
+        NewProp.Paint = Color;
+        this._Props.push(NewProp);
+        this._Scene.AddSceneObject(NewProp);
     }
     private ActorPossesed(Actor:Actor) : void
     {
@@ -211,6 +239,7 @@ class Level
     {
         let Wall:Engineer.Tile = new Engineer.Tile();
         Wall.Paint = Engineer.Color.FromString("#111111");
+        Wall.Data["Wall"] = true;
         Wall.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
         if(Orientation == 0)
         {
