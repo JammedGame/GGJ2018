@@ -18,7 +18,7 @@ class LevelGenerator
         LO.Rooms.push({X:1, Y:0, XS:3, YS:2, WL:[1,1], WR:[1,1], WT:[1,1,1], WB:[0,1,0]});
         LO.Enemy.push({X:1, Y:0});
         LO.Enemy.push({X:3, Y:0});
-        LO.Enemy.push({X:2, Y:1});
+        LO.Enemy.push({X:2, Y:1, Type:"Terminator"});
         LO.Enemy.push({X:2, Y:0, Type:"Terminal"});
         let Length = this.Rand(2, 8);
         for(let i = 0; i < Length; i++)
@@ -51,7 +51,7 @@ class LevelGenerator
         LO.Rooms.push({X:2, Y:LO.Location+1, XS:1, YS:1, WL:[1], WR:[1], WT:[0], WB:[1]});
         LO.Props.push({X:1, Y:LO.Location});
         LO.Props.push({X:3, Y:LO.Location});
-        LO.Enemy.push({X:2, Y:LO.Location+1});
+        LO.Enemy.push({X:2, Y:LO.Location+1, Type:"Heavy"});
     }
     private static GenerateRoom(LO:any)
     {

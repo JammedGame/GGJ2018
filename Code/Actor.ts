@@ -6,6 +6,7 @@ import { Weapon } from "./Weapon";
 import { Projectile } from "./Projectile";
 import { Behaviour } from "./Behaviour";
 import { Sniper } from "./Actors/Sniper";
+import { Effects } from "./Effects";
 
 class Actor extends Engineer.Sprite
 {
@@ -70,6 +71,7 @@ class Actor extends Engineer.Sprite
     {
         if(this._Health <= 0)
         {
+            Effects.Single.GenerateExplosion(this.Trans.Translation);
             this.Destroy();
             return;
         }

@@ -5,6 +5,7 @@ import Engineer from "./Engineer";
 import { Actor } from "./Actor";
 import { Level } from "./Level";
 import { Behaviour } from "./Behaviour";
+import { LevelGenerator } from "./LevelGenerator";
 
 class SniperBehaviour extends Behaviour
 {
@@ -16,8 +17,10 @@ class SniperBehaviour extends Behaviour
         }
         else
         {
-            this._Sight = 1000;
-            this._Radius = 400;
+            let Sight = LevelGenerator.Rand(800,1200);
+            let Radius = LevelGenerator.Rand(350,550);
+            this._Sight = Sight;
+            this._Radius = Radius;
         }
     }
     public RadiusAct(Angle)

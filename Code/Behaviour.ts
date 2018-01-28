@@ -4,6 +4,7 @@ import Engineer from "./Engineer";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
+import { LevelGenerator } from "./LevelGenerator";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -24,8 +25,11 @@ class Behaviour
         }
         else
         {
-            this._Sight = 800;
-            this._Radius = 500;
+
+            let Sight = LevelGenerator.Rand(600,1000);
+            let Radius = LevelGenerator.Rand(350,650);
+            this._Sight = Sight;
+            this._Radius = Radius;
             this._Actor = Actor;
             this._Scene = Scene;
         }

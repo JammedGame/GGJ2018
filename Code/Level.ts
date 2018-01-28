@@ -88,7 +88,7 @@ class Level
         }
         for(let i = 0; i < LO.Enemy.length; i++)
         {
-            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White, LO.Enemy[i].Type);
+            this.AddActors(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White, LO.Enemy[i].Type);
         }
         for(let i = 0; i < LO.Props.length; i++)
         {
@@ -116,6 +116,26 @@ class Level
         }
         this._Effects.Clear();
         this._LVLIndex++;
+        this.Init();
+    }
+    public ResetOver()
+    {
+        for(let i in this._Floors) this._Scene.RemoveSceneObject(this._Floors[i]);
+        for(let i in this._Walls) this._Scene.RemoveSceneObject(this._Walls[i]);
+        for(let i in this._Props) this._Scene.RemoveSceneObject(this._Props[i]);
+        for(let i in this._Actors)
+        {
+            if(this._Actors[i].Weapon)
+            {
+                for(let j in this._Actors[i].Weapon.Projectiles)
+                {
+                    this._Scene.RemoveSceneObject(this._Actors[i].Weapon.Projectiles[j]);
+                }
+            }
+            this._Scene.RemoveSceneObject(this._Actors[i]);
+        }
+        this._Effects.Clear();
+        this._LVLIndex=0;
         console.log(this._Scene.Objects.length);
         this.Init();
     }
@@ -189,7 +209,6 @@ class Level
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
                         this._Effects.GenerateSplash(Actor, Actor.Trans.Translation);
-                        this._Effects.GenerateExplosion(Actor.Trans.Translation);
                     }
                 }
             }
@@ -217,32 +236,62 @@ class Level
             }
         }
     }
+    private AddActors(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
+    {
+        if(ActorClass == "Terminator" || ActorClass == "Terminal" || ActorClass == "Heavy")
+        {
+            this.AddActor(Location,Color,ActorClass);
+            return;
+        }
+        let Index = LevelGenerator.Rand(1,4);
+        if(Index == 1) this.AddActor(Location,Color,ActorClass);
+        else if(Index == 2)
+        {
+            Location.X -= 50;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+            Location.X += 100;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+        }
+        else if(Index == 3)
+        {
+            Location.Y -= 50;
+            Location.X -= 50;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+            Location.X += 100;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+            Location.Y += 100;
+            Location.X -= 100;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+            Location.X += 100;
+            this.AddActor(Location.Copy(),Color,ActorClass);
+        }
+    }
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
     {
         let NewActor = null;
         let Index = LevelGenerator.Rand(1,5);
         if(ActorClass == "Sniper") Index = 1;
-        if(ActorClass == "Heavy") Index = 2;
-        if(ActorClass == "Peasant") Index = 3;
-        if(ActorClass == "Terminator") Index = 4;
-        if(ActorClass == "Terminal") Index = 7;
-        if (Index == 1)
+        if(ActorClass == "Heavy") Index = 3;
+        if(ActorClass == "Peasant") Index = 6;
+        if(ActorClass == "Terminator") Index = 10;
+        if(ActorClass == "Terminal") Index = 11;
+        if (Index == 1 || Index == 2)
         {
             NewActor = new Sniper(null, this._Scene, Location);
         }
-        else if(Index == 2)
+        else if(Index == 3 || Index == 4 || Index == 5)
         {
             NewActor = new Heavy(null, this._Scene, Location);
         }
-        else if(Index == 3)
+        else if(Index == 6 || Index == 7 || Index == 8 || Index == 9)
         {
             NewActor = new Peasant(null, this._Scene, Location);
         }
-        else if (Index == 4) {
+        else if (Index == 10)
+        {
             NewActor = new Terminator(null, this._Scene, Location);
         }
-        
-        else if(Index == 7)
+        else if(Index == 11)
         {
             NewActor = new Terminal(null, this._Scene, Location);
         }

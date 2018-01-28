@@ -23,7 +23,7 @@ class GameScene extends Engineer.Scene2D
     {
         this.Name = "Game";
         this.BackColor = Engineer.Color.FromRGBA(0, 0, 0, 255);
-        this._Player = new Player(this, this.LevelComplete.bind(this));
+        this._Player = new Player(this, this.LevelComplete.bind(this), this.GameOver.bind(this));
         this._Level = new Level(this, this._Player);
         this.Events.TimeTick.push(this.SceneUpdate.bind(this));
     }
@@ -31,6 +31,11 @@ class GameScene extends Engineer.Scene2D
     {
         this._Player.Reset();
         this._Level.Reset();
+    }
+    public GameOver() : void
+    {
+        this._Player.Reset();
+        this._Level.ResetOver();
     }
     private KeyPress(G: any, Args: any): void
     {

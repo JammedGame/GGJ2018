@@ -22,6 +22,7 @@ class Player
     private _Cooldown:number;
     private _TransmissionSound:SoundObject;
     private _LevelComplete:Function;
+    private _GameOver:Function;
     public get Actor():Actor { return this._Actor; }
     public set Actor(Value:Actor)
     {
@@ -33,10 +34,11 @@ class Player
         this.ProjectActor(this._Actor);
         if(Value.Terminal) this._LevelComplete()
     }
-    public constructor(Scene:Engineer.Scene2D, LevelComplete:Function)
+    public constructor(Scene:Engineer.Scene2D, LevelComplete:Function, GameOver:Function)
     {
         this._Scene = Scene;
         this._LevelComplete = LevelComplete;
+        this._GameOver = GameOver;
         this.Init();
         this._TransmissionSound = new SoundObject('/Resources/Sounds/transmission.wav');
         this._HealthBar = new HealthBar(this._Scene);
@@ -93,6 +95,11 @@ class Player
     private Update() : void
     {
         if(this._Cooldown > 0) this._Cooldown--;
+        if(this._Actor.Health <= 0)
+        {
+            this._GameOver();
+            return;
+        }
         this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 1000 - this._Cooldown);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
         if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
