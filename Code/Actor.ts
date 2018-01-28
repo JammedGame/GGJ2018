@@ -20,6 +20,7 @@ class Actor extends Engineer.Sprite
     private _Weapon:Weapon;
     protected _Behaviour:Behaviour;
     protected _Scene:Engineer.Scene2D;
+    protected _Possesive:boolean;
     private _OnActorPossesed:Function[];
     public get Terminal():boolean { return this._Terminal; }
     public get Speed():number { return this._Speed; }
@@ -50,6 +51,7 @@ class Actor extends Engineer.Sprite
         this._Speed = 3;
         this._Scene = Scene;
         this._Explosive = false;
+        this._Possesive = true;
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
@@ -60,6 +62,7 @@ class Actor extends Engineer.Sprite
     }
     private OnClick(Game:Engineer.Game, Args:any) : boolean
     {
+        if(!this._Possesive) return false;
         if(Args.MouseButton == Engineer.MouseButton.Right)
         {
             for(let i in this._OnActorPossesed)

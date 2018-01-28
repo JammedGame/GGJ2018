@@ -14,6 +14,7 @@ class Terminator extends Actor {
         this._Behaviour = new SniperBehaviour(null, this._Scene, this);
         this.Health = 220;
         this.MaxHealth = 220;
+        this._Possesive = false;
         this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10), '/Resources/Sounds/machinegunshot.wav');        if(!Terminator.Sets) Terminator.InitSets();
         this.SpriteSets = Terminator.Sets;
         this.SetSpriteSetByName('idle');  
