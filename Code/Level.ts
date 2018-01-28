@@ -90,8 +90,6 @@ class Level
             sound.Play();
         });
 
-        sounds[0].Volume = 0.4;
-
 
         this._Sounds = sounds;
 
@@ -100,15 +98,10 @@ class Level
     private AdjustSound() : void {
         let sounds = this._Sounds;
 
-        sounds[0].Volume = 0.8;
-        if (sounds[0]['_Sound'].seek() - sounds[1]['_Sound'].seek() > 0.05) {
-            console.log('correcting seek');
-            sounds[1]['_Sound'].seek(sounds[0]['_Sound'].seek());
-        }
         let totalProjectiles = this._Actors.filter(actor => actor != this._Player.Actor).reduce((c, actor) => actor.Weapon.Projectiles.length + c, 0);
         let myProjectiles = this._Player.Actor.Weapon.Projectiles.length;
-        sounds[0].Volume = Math.min(1, (totalProjectiles / 20));
-        sounds[1].Volume = Math.min(sounds[0].Volume, (myProjectiles / 20));
+        sounds[0].Volume = Math.min(0.2, (totalProjectiles / 200));
+        sounds[1].Volume =  Math.max(0.2, myProjectiles / 20);
     }
 
     public Update() : void
