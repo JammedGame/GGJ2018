@@ -57,7 +57,7 @@ class Actor extends Engineer.Sprite
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this.Trans.Scale = new Engineer.Vertex(110,110,1);
         this.Trans.Translation = Location.Copy();
-        this._Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 5), '/Resources/Sounds/machinegunshot.wav');
+        this._Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 5), 'Resources/Sounds/machinegunshot.wav');
         this.Events.MouseDown.push(this.OnClick.bind(this));
     }
     private OnClick(Game:Engineer.Game, Args:any) : boolean

@@ -19,7 +19,7 @@ class HealthBar
     public Init()
     {
         let Hud = new Engineer.Tile();
-        Hud.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/HealthBar.png"]);
+        Hud.Collection = new Engineer.TileCollection(null, ["Resources/Textures/HealthBar.png"]);
         Hud.Index = 0;
         Hud.Fixed = true;
         Hud.Trans.Scale = new Engineer.Vertex(450,150,0);

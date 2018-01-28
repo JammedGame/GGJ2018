@@ -14,7 +14,7 @@ class Heavy extends Actor {
         this.Health = 200;
         this.MaxHealth = 200;
         this._Explosive = true;
-        this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10), '/Resources/Sounds/machinegunshot.wav');
+        this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10), 'Resources/Sounds/machinegunshot.wav');
         if(!Heavy.Sets) Heavy.InitSets();
         this.SpriteSets = Heavy.Sets;
         this.SetSpriteSetByName('idle'); 
@@ -23,14 +23,14 @@ class Heavy extends Actor {
     private static InitSets()
     {
         let Walking = new SpriteSet(null, 'walking', [
-            '/Resources/Textures/Actors/heavy04_01.png',
-             //'/Resources/Textures/Actors/heavy04_02.png'
+            'Resources/Textures/Actors/heavy04_01.png',
+             //'Resources/Textures/Actors/heavy04_02.png'
         ])
 
         Walking.Seed = 5;
 
         let Idle = new SpriteSet(null, 'idle', [
-                '/Resources/Textures/Actors/heavy04_01.png',
+                'Resources/Textures/Actors/heavy04_01.png',
             ])
         
         Heavy.Sets = [Walking, Idle];
