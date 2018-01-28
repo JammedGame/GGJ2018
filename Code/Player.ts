@@ -79,7 +79,14 @@ class Player
         if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
         if(this._Movement.Left && !this._Actor.Data["Collision_Wall"].Left) this._Scene.Trans.Translation.X += this._Speed;
         if(this._Movement.Right && !this._Actor.Data["Collision_Wall"].Right) this._Scene.Trans.Translation.X -= this._Speed;
-        if(!!this._Shoot) this._Actor.Weapon.Fire(this._Angle, this.ReprojectLocation(), 0);
+        if(!!this._Shoot)
+        {
+            let Loc = this.ReprojectLocation();
+            let Offset = new Engineer.Vertex(15, -40, 0);
+            Offset.RotateZ(this._Angle + 90);
+            Loc.Translate(Offset);
+            this._Actor.Weapon.Fire(this._Angle, Loc, 0);
+        }
         if (this._Movement.IsMoving()) {
             this._Actor.UpdateSpriteSetByName('walking');
         }

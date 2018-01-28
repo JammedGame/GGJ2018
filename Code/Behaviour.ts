@@ -52,7 +52,11 @@ class Behaviour
     }
     public RadiusAct(Angle)
     {
-        this._Actor.Weapon.Fire(Angle,this._Actor.Trans.Translation,1);
+        let Loc = this._Actor.Trans.Translation.Copy();
+        let Offset = new Engineer.Vertex(15, -40, 0);
+        Offset.RotateZ(Angle + 90);
+        Loc.Translate(Offset);
+        this._Actor.Weapon.Fire(Angle,Loc,1);
     }
     public SightAct(Angle)
     {
