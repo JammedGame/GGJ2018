@@ -44,7 +44,7 @@ class Actor extends Engineer.Sprite
         this._Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 5));
         this.Events.MouseDown.push(this.OnClick.bind(this));
     }
-    private OnClick(Game:Engineer.Game, Args:any) : void
+    private OnClick(Game:Engineer.Game, Args:any) : boolean
     {
         if(Args.MouseButton == Engineer.MouseButton.Right)
         {
@@ -53,6 +53,7 @@ class Actor extends Engineer.Sprite
                 this._OnActorPossesed[i](this);
             }
         }
+        else return false;
     }
     public Update() : void
     {
