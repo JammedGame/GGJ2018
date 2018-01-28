@@ -99,7 +99,7 @@ class Player
         this._Actor.Trans.Translation.X = -this._Scene.Trans.Translation.X + SCREEN_WIDTH / 2 ;
         this._Actor.Trans.Translation.Y = -this._Scene.Trans.Translation.Y + SCREEN_HEIGHT / 2 ;
     }
-    private ReprojectLocation() : Engineer.Vertex
+    public ReprojectLocation() : Engineer.Vertex
     {
         let Reprojected:Engineer.Vertex = new Engineer.Vertex(0,0,0);
         Reprojected.X = -this._Scene.Trans.Translation.X + SCREEN_WIDTH / 2 ;

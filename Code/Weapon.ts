@@ -11,6 +11,7 @@ class Weapon
     private _FireRate:number;
     private _Projectile:Projectile;
     private _Projectiles:Projectile[];
+    public get Done():boolean { return this._Projectiles.length == 0; }
     public get Projectiles():Projectile[] { return this._Projectiles; }
     public constructor(Scene:Engineer.Scene2D ,FireRate:number, Projectile:Projectile)
     {

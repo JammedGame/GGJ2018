@@ -6,6 +6,8 @@ import { Player } from "./Player";
 import { LevelGenerator } from "./LevelGenerator";
 import { Actor } from "./Actor";
 import { Sniper } from "./Actors/Sniper";
+import { Heavy } from "./Actors/Heavy";
+import { Weapon } from "./Weapon";
 
 const FIELD_SIZE = 500;
 
@@ -13,10 +15,12 @@ class Level
 {
     public static Single:Level;
     private _Actors:Actor[];
+    private _Orphans:Weapon[];
     private _Scene:Engineer.Scene2D;
     private _Player:Player;
     private _Floors:Engineer.Tile[];
     private _Walls:Engineer.Tile[];
+    private _UpdateTarget:boolean;
     public get Actors():Actor[] { return this._Actors; }
     public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
@@ -30,26 +34,93 @@ class Level
         this._Floors = [];
         this._Walls = [];
         this._Actors = [];
+        this._Orphans = [];
         let LO = LevelGenerator.Generate(5);
-        console.log(LO);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
             this.CreateRoom(LO.Rooms[i]);
         }
         for(let i = 0; i < LO.Enemy.length; i++)
         {
-            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.Purple, "Sniper");
+            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White);
         }
         this._Player.Actor = this._Actors[this._Actors.length - 1];
+        this._UpdateTarget = true;
     }
-    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass:String = null) : void
+    public Update() : void
+    {
+        for(let i = this._Orphans.length - 1; i >= 0; i--)
+        {
+            this._Orphans[i].Update();
+            if(this._Orphans[i].Done)
+            {
+                this._Orphans.splice(i,1);
+            }
+        }
+        this.CheckProjectilesPlayer();
+        for(let i = this._Actors.length - 1; i >= 0; i--)
+        {
+            if(this._UpdateTarget) this._Actors[i].Target = this._Player.Actor;
+            this.CheckProjectiles(this._Actors[i]);
+            this._Actors[i].Update();
+            if(this._Actors[i].Dead)
+            {
+                if(!this._Actors[i].Weapon.Done) this._Orphans.push(this._Actors[i].Weapon);
+                this._Actors.splice(i,1);
+            }
+        }
+    }
+    private CheckProjectiles(Actor:Actor) : void
+    {
+        if(Actor == this._Player.Actor) return;
+        for(let i in this._Actors)
+        {
+            for(let j in this._Actors[i].Weapon.Projectiles)
+            {
+                let Projectile = this._Actors[i].Weapon.Projectiles[j];
+                if(Engineer.Vertex.Distance(Actor.Trans.Translation, Projectile.Trans.Translation) < 40)
+                {
+                    if(Projectile.Owner == 0)
+                    {
+                        Actor.Health -= Projectile.Damage;
+                        Projectile.Duration = 0;
+                    }
+                }
+            }
+        }
+    }
+    private CheckProjectilesPlayer() : void
+    {
+        for(let i in this._Actors)
+        {
+            for(let j in this._Actors[i].Weapon.Projectiles)
+            {
+                let PlayerLoc = this._Player.ReprojectLocation();
+                let Projectile = this._Actors[i].Weapon.Projectiles[j];
+                if(Engineer.Vertex.Distance(PlayerLoc, Projectile.Trans.Translation) < 40)
+                {
+                    if(Projectile.Owner != 0)
+                    {
+                        this._Player.Actor.Health -= Projectile.Damage / 5;
+                        Projectile.Duration = 0;
+                    }
+                }
+            }
+        }
+    }
+    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
     {
         let NewActor = null;
-        if (ActorClass == "Sniper") {
+        let Index = LevelGenerator.Rand(1,3);
+        if(ActorClass == "Sniper") Index = 1;
+        if(ActorClass == "Heavy") Index = 2;
+        if (Index == 1)
+        {
             NewActor = new Sniper(null, this._Scene, Location);
         }
-        else {
-            NewActor = new Actor(null, this._Scene, Location);
+        else
+        {
+            NewActor = new Heavy(null, this._Scene, Location);
         }
         NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
         NewActor.Paint = Color;
