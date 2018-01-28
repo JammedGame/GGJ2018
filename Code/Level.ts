@@ -9,6 +9,7 @@ import { Sniper } from "./Actors/Sniper";
 import { Heavy } from "./Actors/Heavy";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
+import { SoundObject } from "engineer-js";
 import { TileCollection } from "engineer-js";
 
 const FIELD_SIZE = 500;
@@ -27,6 +28,9 @@ class Level
     private _FloorColl:TileCollection;
     private _WallColl:TileCollection;
     public get Actors():Actor[] { return this._Actors; }
+
+    private _Sounds: SoundObject[];
+
     public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
         this._Scene = Scene;
@@ -66,9 +70,47 @@ class Level
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
         this._Walls = this._Scene.GetObjectsWithData("Wall", true);
+
+        this.InitSounds();
     }
+
+    public InitSounds() : void
+    {
+        let sounds = [
+            '/Resources/Sounds/fightpreparebassloop.mp3',
+            '/Resources/Sounds/fightdrumloop.mp3',
+        ].map(sound => new SoundObject(sound));
+        
+
+        sounds.forEach(sound => {
+            sound.Looped = true;
+            sound.Play();
+        });
+
+        sounds[0].Volume = 0.4;
+
+
+        this._Sounds = sounds;
+
+    }
+
+    private AdjustSound() : void {
+        let sounds = this._Sounds;
+
+        sounds[0].Volume = 0.8;
+        if (sounds[0]['_Sound'].seek() - sounds[1]['_Sound'].seek() > 0.05) {
+            console.log('correcting seek');
+            sounds[1]['_Sound'].seek(sounds[0]['_Sound'].seek());
+        }
+        let totalProjectiles = this._Actors.filter(actor => actor != this._Player.Actor).reduce((c, actor) => actor.Weapon.Projectiles.length + c, 0);
+        let myProjectiles = this._Player.Actor.Weapon.Projectiles.length;
+        sounds[0].Volume = Math.min(1, (totalProjectiles / 20));
+        sounds[1].Volume = Math.min(sounds[0].Volume, (myProjectiles / 20));
+    }
+
     public Update() : void
     {
+        this.AdjustSound();
         for(let i = this._Orphans.length - 1; i >= 0; i--)
         {
             this._Orphans[i].Update();
