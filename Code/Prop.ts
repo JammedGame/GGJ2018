@@ -31,7 +31,7 @@ class Box extends Prop
         {
             this.Data["Wall"] = true;
             this.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
-            this.Trans.Scale = new Engineer.Vertex(200,200,0);
+            this.Trans.Scale = new Engineer.Vertex(150,150,0);
             this.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/box.png"]);
             this.Index = 0;
         }
@@ -51,7 +51,7 @@ class Barrel extends Prop
         {
             this.Data["Wall"] = true;
             this.Data["Collision"] = Engineer.CollisionType.Radius2D;
-            this.Trans.Scale = new Engineer.Vertex(150,150,0);
+            this.Trans.Scale = new Engineer.Vertex(100,100,0);
             this.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/bure.png"]);
             this.Index = 0;
         }
