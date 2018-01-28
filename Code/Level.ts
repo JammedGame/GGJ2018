@@ -47,7 +47,7 @@ class Level
         this._Actors = [];
         this._Orphans = [];
         this._Props = [];
-        this._Effects = new Effects();
+        this._Effects = new Effects(this._Scene);
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
         this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
