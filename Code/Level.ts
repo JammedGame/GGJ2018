@@ -38,6 +38,13 @@ class Level
         this._Actors = [];
         this._Orphans = [];
         this._Props = [];
+        let Back = new Engineer.Tile();
+        Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
+        Back.Index = 0;
+        Back.Trans.Translation = new Engineer.Vertex(960,540,0);
+        Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
+        Back.Fixed = true;
+        this._Scene.AddSceneObject(Back);
         let LO = LevelGenerator.Generate(5);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
