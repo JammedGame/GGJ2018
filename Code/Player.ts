@@ -4,6 +4,7 @@ import Engineer from "./Engineer";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
+import { HealthBar } from "./HealthBar";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -14,6 +15,7 @@ class Player
     private _Angle:number;
     private _Actor:Actor;
     private _Speed:number;
+    private _HealthBar:HealthBar;
     private _Movement:Movement;
     private _Scene:Engineer.Scene2D;
     public get Actor():Actor { return this._Actor; }
@@ -33,6 +35,7 @@ class Player
         this._Shoot = false;
         this._Speed = 4;
         this._Movement = new Movement();
+        this._HealthBar = new HealthBar(this._Scene);
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
         this._Scene.Events.KeyUp.push(this.KeyUp.bind(this));
         this._Scene.Events.MouseDown.push(this.MouseDown.bind(this));
@@ -70,6 +73,7 @@ class Player
     }   
     private Update() : void
     {
+        this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
         if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
         if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;

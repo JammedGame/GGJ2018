@@ -9,16 +9,22 @@ import { Sniper } from "./Actors/Sniper";
 
 class Actor extends Engineer.Sprite
 {
+    private _Speed:number;
     private _Health:number;
+    private _MaxHealth:number;
     private _Possesed:boolean;
     private _Target:Actor;
     private _Weapon:Weapon;
-    private _Behaviour:Behaviour;
-    private _Scene:Engineer.Scene2D;
+    protected _Behaviour:Behaviour;
+    protected _Scene:Engineer.Scene2D;
     private _OnActorPossesed:Function[];
+    public get Speed():number { return this._Speed; }
+    public set Speed(Value:number) { this._Speed = Value; }
     public get Dead():boolean { return this._Health <= 0; }
     public get Health():number { return this._Health; }
     public set Health(Value:number) { this._Health = Value; }
+    public get MaxHealth():number { return this._MaxHealth; }
+    public set MaxHealth(Value:number) { this._MaxHealth = Value; }
     public get Possesed():boolean { return this._Possesed; }
     public set Possesed(Value:boolean) { this._Possesed = Value; }
     public get Target():Actor { return this._Target; }
@@ -35,6 +41,8 @@ class Actor extends Engineer.Sprite
     public Init(Scene:Engineer.Scene2D, Location:Engineer.Vertex)
     {
         this._Health = 100;
+        this._MaxHealth = 100;
+        this._Speed = 3;
         this._Scene = Scene;
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);

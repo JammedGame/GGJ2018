@@ -4,13 +4,16 @@ import { Actor } from "../Actor";
 import { Scene2D, Vertex, SpriteSet } from "engineer-js";
 import { Weapon } from "../Weapon";
 import { Projectile } from "../Projectile";
+import { SniperBehaviour } from "../SniperBehaviour";
 
 class Sniper extends Actor {
 
     public Init(Scene: Scene2D, Location: Vertex)
     {
         super.Init(Scene, Location)
+        this._Behaviour = new SniperBehaviour(null, this._Scene, this);
         this.Health = 80;
+        this.MaxHealth = 80;
         this.Weapon = new Weapon(Scene, 50, new Projectile(null, 3, 100));
         if(!Sniper.Sets) Sniper.InitSets();
         this.SpriteSets = Sniper.Sets;

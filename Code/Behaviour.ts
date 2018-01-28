@@ -3,15 +3,16 @@ export { Behaviour }
 import Engineer from "./Engineer";
 
 import { Actor } from "./Actor";
+import { Level } from "./Level";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
 
 class Behaviour
 {
-    private _Sight:number;
-    private _Radius:number;
-    private _Actor:Actor;
+    protected _Sight:number;
+    protected _Radius:number;
+    protected _Actor:Actor;
     private _Scene:Engineer.Scene2D;
     public constructor(Old?:Behaviour, Scene?:Engineer.Scene2D, Actor?:Actor)
     {
@@ -42,8 +43,32 @@ class Behaviour
         }
         if(RadiusSat)
         {
-            this._Actor.Weapon.Fire(Angle,this._Actor.Trans.Translation,1);
+            this.RadiusAct(Angle);
         }
+        else if(SightSat)
+        {
+            this.SightAct(Angle);
+        }
+    }
+    public RadiusAct(Angle)
+    {
+        this._Actor.Weapon.Fire(Angle,this._Actor.Trans.Translation,1);
+    }
+    public SightAct(Angle)
+    {
+        let Direction = new Engineer.Vertex(0,this._Actor.Speed,0);
+        Direction.RotateZ(Angle - 90);
+        Level.Single.CheckCollision(this._Actor);
+        if(this._Actor.Data["Collision_Wall"].Top || this._Actor.Data["Collision_Wall"].Bottom)
+        {
+            Direction.Y = 0;
+        }
+        if(this._Actor.Data["Collision_Wall"].Left || this._Actor.Data["Collision_Wall"].Right)
+        {
+            Direction.X = 0;
+        }
+        this._Actor.Trans.Translation.X += Direction.X;
+        this._Actor.Trans.Translation.Y += Direction.Y;
     }
     private ReprojectLocation() : Engineer.Vertex
     {

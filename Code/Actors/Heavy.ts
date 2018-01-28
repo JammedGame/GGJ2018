@@ -10,7 +10,9 @@ class Heavy extends Actor {
     public Init(Scene: Scene2D, Location: Vertex)
     {
         super.Init(Scene, Location)
+        this.Speed = 2;
         this.Health = 200;
+        this.MaxHealth = 200;
         this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10));
         if(!Heavy.Sets) Heavy.InitSets();
         this.SpriteSets = Heavy.Sets;
