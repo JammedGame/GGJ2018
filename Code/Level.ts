@@ -10,6 +10,7 @@ import { Heavy } from "./Actors/Heavy";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
 import { TileCollection } from "engineer-js";
+import { Effects } from "./Effects"
 
 const FIELD_SIZE = 500;
 
@@ -23,6 +24,7 @@ class Level
     private _Floors:Engineer.Tile[];
     private _Walls:Engineer.Tile[];
     private _Props:Prop[];
+    private _Effects:Effects;
     private _UpdateTarget:boolean;
     private _FloorColl:TileCollection;
     public get Actors():Actor[] { return this._Actors; }
@@ -40,6 +42,7 @@ class Level
         this._Actors = [];
         this._Orphans = [];
         this._Props = [];
+        this._Effects = new Effects();
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
         this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.jpg"]);
@@ -67,6 +70,7 @@ class Level
     }
     public Update() : void
     {
+        this._Effects.CheckActiveSplashes();
         for(let i = this._Orphans.length - 1; i >= 0; i--)
         {
             this._Orphans[i].Update();
@@ -102,6 +106,7 @@ class Level
                     {
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
+                        this._Effects.GenerateSplash(Actor.Trans.Translation, this._Scene);
                     }
                 }
             }
@@ -121,6 +126,8 @@ class Level
                     {
                         this._Player.Actor.Health -= Projectile.Damage / 5;
                         Projectile.Duration = 0;
+                        
+                        this._Effects.GenerateSplash(this._Player.ReprojectLocation(), this._Scene);
                     }
                 }
             }
