@@ -9,6 +9,7 @@ import { Sniper } from "./Actors/Sniper";
 import { Heavy } from "./Actors/Heavy";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
+import { TileCollection } from "engineer-js";
 
 const FIELD_SIZE = 500;
 
@@ -23,6 +24,7 @@ class Level
     private _Walls:Engineer.Tile[];
     private _Props:Prop[];
     private _UpdateTarget:boolean;
+    private _FloorColl:TileCollection;
     public get Actors():Actor[] { return this._Actors; }
     public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
@@ -40,6 +42,7 @@ class Level
         this._Props = [];
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.jpg"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -264,7 +267,11 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Paint = Engineer.Color.FromString("#F0E68C");
+        Floor.Collection = this._FloorColl;
+        Floor.RepeatX = XSize;
+        Floor.RepeatY = YSize;
+        Floor.Index = 0;
+        //Floor.Paint = Engineer.Color.FromString("#F0E68C");
         Floor.Trans.Scale = new Engineer.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
         Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
         this._Floors.push(Floor);
