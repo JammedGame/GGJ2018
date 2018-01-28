@@ -23,7 +23,7 @@ class Heavy extends Actor {
     {
         let Walking = new SpriteSet(null, 'walking', [
             '/Resources/Textures/Actors/heavy04_01.png',
-             '/Resources/Textures/Actors/heavy04_02.png'
+             //'/Resources/Textures/Actors/heavy04_02.png'
         ])
 
         Walking.Seed = 5;

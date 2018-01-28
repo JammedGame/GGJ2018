@@ -1,11 +1,11 @@
 export { Projectile }
 
 import Engineer from "./Engineer"
-import { SpriteSet } from "engineer-js";
+import { SpriteSet, TileCollection } from "engineer-js";
 
 import { Level } from "./Level";
 
-class Projectile extends Engineer.Sprite
+class Projectile extends Engineer.Tile
 {
     private _Owner:number;
     private _Speed:number;
@@ -16,7 +16,7 @@ class Projectile extends Engineer.Sprite
     public get Damage():number { return this._Damage; }
     public get Duration():number { return this._Duration; }
     public set Duration(Value:number) { this._Duration = Value; }
-    public constructor(Old?:Projectile, Speed?:number, Damage?:number)
+    public constructor(Old?:Projectile, Speed?:number, Damage?:number, Index?:number)
     {
         super(Old);
         if(Old != null)
@@ -32,21 +32,26 @@ class Projectile extends Engineer.Sprite
             this._Owner = 1;
             this._Speed = Speed;
             this._Damage = Damage;
-            this.Init();
+            if(!Index) Index = 0;
+            this.Init(Index);
         }
     }
     public Copy() : Projectile
     {
         return new Projectile(this);
     }
-    public Init() : void
+    public Init(Index) : void
     {
         this.Trans.Scale = new Engineer.Vertex(42,42,1);
-        this.Paint = Engineer.Color.Black;
         this.Data["Collision"] = Engineer.CollisionType.Radius2D;
-        this.SpriteSets = [new SpriteSet(null, 'bullet', ['/Resources/Textures/bullet.png'])];
-        this.SetSpriteSet(0);
-        this.Trans.Scale = new Engineer.Vertex(10,10,1);
+        this.Collection = new TileCollection(null, ['/Resources/Textures/bullet.png', '/Resources/Textures/sniper_bullet.png']);
+        this.Index = Index;
+        if(Index == 0)
+        {
+            this.Trans.Scale = new Engineer.Vertex(20,20,1);
+            this.Paint = Engineer.Color.Maroon;
+        }
+        else this.Trans.Scale = new Engineer.Vertex(30,60,1);
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
