@@ -24,7 +24,7 @@ class Sniper extends Actor {
     {
         let Walking = new SpriteSet(null, 'walking', [
             '/Resources/Textures/Actors/sniper01_01.png',
-             '/Resources/Textures/Actors/sniper01_02.png'
+             //'/Resources/Textures/Actors/sniper01_02.png'
         ])
 
         Walking.Seed = 5;

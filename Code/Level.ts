@@ -42,7 +42,7 @@ class Level
         this._Props = [];
         let Back = new Engineer.Tile();
         Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.jpg"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor.png"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -267,7 +267,7 @@ class Level
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
         let Floor:Engineer.Tile = new Engineer.Tile();
-        Floor.Collection = this._FloorColl;
+        Floor.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
         Floor.RepeatX = XSize;
         Floor.RepeatY = YSize;
         Floor.Index = 0;
