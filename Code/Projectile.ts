@@ -52,7 +52,10 @@ class Projectile extends Engineer.Tile
             this.Trans.Scale = new Engineer.Vertex(20,20,1);
             this.Paint = Engineer.Color.Maroon;
         }
-        else this.Trans.Scale = new Engineer.Vertex(30,60,1);
+        else {
+            this.Trans.Scale = new Engineer.Vertex(40,80,1);
+            this.Paint = Engineer.Color.Black;
+        }
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
