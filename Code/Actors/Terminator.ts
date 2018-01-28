@@ -1,4 +1,4 @@
-export { Peasant }
+export { Terminator }
 
 import { Actor } from "../Actor";
 import { Scene2D, Vertex, SpriteSet } from "engineer-js";
@@ -6,33 +6,31 @@ import { Weapon } from "../Weapon";
 import { Projectile } from "../Projectile";
 import { SniperBehaviour } from "../SniperBehaviour";
 
-class Peasant extends Actor {
+class Terminator extends Actor {
 
     public Init(Scene: Scene2D, Location: Vertex)
     {
         super.Init(Scene, Location)
         this._Behaviour = new SniperBehaviour(null, this._Scene, this);
-        this.Health = 20;
-        this.MaxHealth = 20;
-        this.Weapon = new Weapon(Scene, 50, new Projectile(null, 3, 100, 1), '/Resources/Sounds/sniper_shot.wav');
-        if(!Peasant.Sets) Peasant.InitSets();
-        this.SpriteSets = Peasant.Sets;
+        this.Health = 220;
+        this.MaxHealth = 220;
+        this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10), '/Resources/Sounds/machinegunshot.wav');        if(!Terminator.Sets) Terminator.InitSets();
+        this.SpriteSets = Terminator.Sets;
         this.SetSpriteSetByName('idle');  
     }
     private static Sets:Engineer.SpriteSet[];
     private static InitSets()
     {
         let Walking = new SpriteSet(null, 'walking', [
-            '/Resources/Textures/Actors/peasant02_01.png',
-            '/Resources/Textures/Actors/peasant02_02.png',
+            '/Resources/Textures/Actors/terminator01.png',
         ])
 
         Walking.Seed = 5;
 
         let Idle = new SpriteSet(null, 'idle', [
-                '/Resources/Textures/Actors/peasant02_01.png',
+                '/Resources/Textures/Actors/terminator01.png',
             ])
         
-        Peasant.Sets = [Walking, Idle];
+            Terminator.Sets = [Walking, Idle];
     }
 }

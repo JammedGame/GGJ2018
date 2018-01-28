@@ -13,6 +13,8 @@ import { Prop, Box, Barrel } from "./Prop";
 import { SoundObject } from "engineer-js";
 import { TileCollection } from "engineer-js";
 import { Effects } from "./Effects"
+import { Peasant } from "./Actors/Peasant";
+import { Terminator } from "./Actors/Terminator";
 
 const FIELD_SIZE = 500;
 
@@ -178,9 +180,11 @@ class Level
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
     {
         let NewActor = null;
-        let Index = LevelGenerator.Rand(1,3);
+        let Index = LevelGenerator.Rand(1,5);
         if(ActorClass == "Sniper") Index = 1;
         if(ActorClass == "Heavy") Index = 2;
+        if(ActorClass == "Peasant") Index = 3;
+        if(ActorClass == "Terminator") Index = 4;
         if(ActorClass == "Terminal") Index = 7;
         if (Index == 1)
         {
@@ -190,6 +194,14 @@ class Level
         {
             NewActor = new Heavy(null, this._Scene, Location);
         }
+        else if(Index == 3)
+        {
+            NewActor = new Peasant(null, this._Scene, Location);
+        }
+        else if (Index == 4) {
+            NewActor = new Terminator(null, this._Scene, Location);
+        }
+        
         else if(Index == 7)
         {
             NewActor = new Terminal(null, this._Scene, Location);
