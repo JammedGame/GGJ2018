@@ -187,6 +187,7 @@ class Level
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
                         this._Effects.GenerateSplash(Actor, Actor.Trans.Translation);
+                        this._Effects.GenerateExplosion(Actor.Trans.Translation);
                     }
                 }
             }

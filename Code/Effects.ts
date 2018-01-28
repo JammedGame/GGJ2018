@@ -2,7 +2,7 @@ export { Effects }
 
 import Engineer from "./Engineer";
 import { Actor } from "./Actor";
-import { TileCollection } from "engineer-js";
+import { TileCollection, SpriteSet, Sprite, Vertex } from "engineer-js";
 
 
 class Effects
@@ -12,6 +12,7 @@ class Effects
     public static Single:Effects;
     private _ActiveSplashes:Engineer.Tile[];
     private _ActiveExplosions:Engineer.Sprite[];
+    private _ExplosionSet:SpriteSet;
     private _TileCollection:TileCollection;
     public constructor(Scene:Engineer.Scene2D)
     {
@@ -28,6 +29,21 @@ class Effects
             "/Resources/Textures/Stains/Blood_2.png",
             "/Resources/Textures/Stains/Blood_5.png",
         ]);
+
+        this._ExplosionSet = new SpriteSet(null, 'walking', [
+            '/Resources/Textures/Explosion/Explosion_1.png',
+            '/Resources/Textures/Explosion/Explosion_2.png',
+            '/Resources/Textures/Explosion/Explosion_3.png',
+            '/Resources/Textures/Explosion/Explosion_4.png',
+            '/Resources/Textures/Explosion/Explosion_5.png',
+            '/Resources/Textures/Explosion/Explosion_6.png',
+            '/Resources/Textures/Explosion/Explosion_7.png',
+            '/Resources/Textures/Explosion/Explosion_8.png',
+            '/Resources/Textures/Explosion/Explosion_9.png',
+            '/Resources/Textures/Explosion/Explosion_10.png',
+        ])
+
+        this._ExplosionSet.Seed = 15;
     }
     public CheckActiveSplashes()
     {
@@ -61,7 +77,17 @@ class Effects
     }
     public GenerateExplosion(Location:Engineer.Vertex)
     {
-        
+        let explosion = new Sprite();
+        explosion.SpriteSets.push(this._ExplosionSet);
+        explosion.SetSpriteSet(0);
+        explosion.Trans.Translation = new Engineer.Vertex(Location.X, Location.Y, 0.2);
+        explosion.Events.SpriteSetAnimationComplete.push(() => {
+            this._Scene.RemoveSceneObject(explosion);
+            console.log('removign bla bla);');
+        });
+
+        explosion.Trans.Scale = new Engineer.Vertex(450, 450, 3);
+        this._Scene.AddSceneObject(explosion);
     }
     public Clear()
     {

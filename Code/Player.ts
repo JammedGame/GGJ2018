@@ -28,7 +28,7 @@ class Player
         if(this._Cooldown != 0) return;
         if(this._Actor != null) this.ReprojectActor(this._Actor);
         this._Actor = Value;
-        this._Cooldown = 1000;
+        this._Cooldown = 0;
         this._TransmissionSound.Play();
         this.ProjectActor(this._Actor);
         if(Value.Terminal) this._LevelComplete()
