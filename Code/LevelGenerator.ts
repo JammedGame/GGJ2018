@@ -19,6 +19,7 @@ class LevelGenerator
         LO.Enemy.push({X:1, Y:0});
         LO.Enemy.push({X:3, Y:0});
         LO.Enemy.push({X:2, Y:1});
+        LO.Enemy.push({X:2, Y:0, Type:"Terminal"});
         let Length = this.Rand(2, 8);
         for(let i = 0; i < Length; i++)
         {

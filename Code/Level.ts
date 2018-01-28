@@ -7,6 +7,7 @@ import { LevelGenerator } from "./LevelGenerator";
 import { Actor } from "./Actor";
 import { Sniper } from "./Actors/Sniper";
 import { Heavy } from "./Actors/Heavy";
+import { Terminal } from "./Actors/Terminal";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
 import { SoundObject } from "engineer-js";
@@ -57,14 +58,14 @@ class Level
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
         Back.Fixed = true;
         this._Scene.AddSceneObject(Back);
-        let LO = LevelGenerator.Generate(5);
+        let LO = LevelGenerator.Generate(1);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
             this.CreateRoom(LO.Rooms[i]);
         }
         for(let i = 0; i < LO.Enemy.length; i++)
         {
-            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White);
+            this.AddActor(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White, LO.Enemy[i].Type);
         }
         for(let i = 0; i < LO.Props.length; i++)
         {
@@ -76,7 +77,6 @@ class Level
 
         this.InitSounds();
     }
-
     public InitSounds() : void
     {
         let sounds = [
@@ -98,8 +98,10 @@ class Level
     private AdjustSound() : void {
         let sounds = this._Sounds;
 
-        let totalProjectiles = this._Actors.filter(actor => actor != this._Player.Actor).reduce((c, actor) => actor.Weapon.Projectiles.length + c, 0);
-        let myProjectiles = this._Player.Actor.Weapon.Projectiles.length;
+        let totalProjectiles = this._Actors
+            .filter(actor => actor != this._Player.Actor && actor.Weapon)
+            .reduce((c, actor) => actor.Weapon.Projectiles.length + c, 0);
+        let myProjectiles = this._Player.Actor.Weapon ? this._Player.Actor.Weapon.Projectiles.length : 0;
         sounds[0].Volume = Math.min(0.2, (totalProjectiles / 200));
         sounds[1].Volume =  Math.max(0.2, myProjectiles / 20);
     }
@@ -124,7 +126,7 @@ class Level
             this._Actors[i].Update();
             if(this._Actors[i].Dead)
             {
-                if(!this._Actors[i].Weapon.Done) this._Orphans.push(this._Actors[i].Weapon);
+                if(this._Actors[i].Weapon && !this._Actors[i].Weapon.Done) this._Orphans.push(this._Actors[i].Weapon);
                 this._Actors.splice(i,1);
             }
         }
@@ -134,6 +136,7 @@ class Level
         if(Actor == this._Player.Actor) return;
         for(let i in this._Actors)
         {
+            if(!this._Actors[i].Weapon) continue;
             for(let j in this._Actors[i].Weapon.Projectiles)
             {
                 let Projectile = this._Actors[i].Weapon.Projectiles[j];
@@ -154,6 +157,7 @@ class Level
     {
         for(let i in this._Actors)
         {
+            if(!this._Actors[i].Weapon) continue;
             for(let j in this._Actors[i].Weapon.Projectiles)
             {
                 let PlayerLoc = this._Player.ReprojectLocation();
@@ -177,13 +181,18 @@ class Level
         let Index = LevelGenerator.Rand(1,3);
         if(ActorClass == "Sniper") Index = 1;
         if(ActorClass == "Heavy") Index = 2;
+        if(ActorClass == "Terminal") Index = 7;
         if (Index == 1)
         {
             NewActor = new Sniper(null, this._Scene, Location);
         }
-        else
+        else if(Index == 2)
         {
             NewActor = new Heavy(null, this._Scene, Location);
+        }
+        else if(Index == 7)
+        {
+            NewActor = new Terminal(null, this._Scene, Location);
         }
         NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
         NewActor.Paint = Color;
@@ -296,7 +305,6 @@ class Level
         //Wall.Paint = Engineer.Color.FromString("#111111");
         Wall.Collection = this._WallColl;
         Wall.Index = 0;
-        console.log(Length);
         if(Orientation == 0)
         {
             Wall.RepeatX = Length * 10;

@@ -21,6 +21,7 @@ class Player
     private _Scene:Engineer.Scene2D;
     private _Cooldown:number;
     private _TransmissionSound:SoundObject;
+    private _LevelComplete:Function;
     public get Actor():Actor { return this._Actor; }
     public set Actor(Value:Actor)
     {
@@ -30,10 +31,12 @@ class Player
         this._Cooldown = 0;
         this._TransmissionSound.Play();
         this.ProjectActor(this._Actor);
+        if(Value.Terminal) this._LevelComplete()
     }
-    public constructor(Scene:Engineer.Scene2D)
+    public constructor(Scene:Engineer.Scene2D, LevelComplete:Function)
     {
         this._Scene = Scene;
+        this._LevelComplete = LevelComplete;
         this.Init();
         this._TransmissionSound = new SoundObject('/Resources/Sounds/transmission.wav');
     }
@@ -94,7 +97,7 @@ class Player
             let Offset = new Engineer.Vertex(15, -40, 0);
             Offset.RotateZ(this._Angle + 90);
             Loc.Translate(Offset);
-            this._Actor.Weapon.Fire(this._Angle, Loc, 0);
+            if(this._Actor.Weapon) this._Actor.Weapon.Fire(this._Angle, Loc, 0);
         }
         if (this._Movement.IsMoving()) {
             this._Actor.UpdateSpriteSetByName('walking');

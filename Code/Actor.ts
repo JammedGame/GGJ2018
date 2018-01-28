@@ -9,6 +9,7 @@ import { Sniper } from "./Actors/Sniper";
 
 class Actor extends Engineer.Sprite
 {
+    protected _Terminal:boolean;
     private _Speed:number;
     private _Health:number;
     private _MaxHealth:number;
@@ -18,6 +19,7 @@ class Actor extends Engineer.Sprite
     protected _Behaviour:Behaviour;
     protected _Scene:Engineer.Scene2D;
     private _OnActorPossesed:Function[];
+    public get Terminal():boolean { return this._Terminal; }
     public get Speed():number { return this._Speed; }
     public set Speed(Value:number) { this._Speed = Value; }
     public get Dead():boolean { return this._Health <= 0; }
@@ -40,6 +42,7 @@ class Actor extends Engineer.Sprite
     }
     public Init(Scene:Engineer.Scene2D, Location:Engineer.Vertex)
     {
+        this._Terminal = false;
         this._Health = 100;
         this._MaxHealth = 100;
         this._Speed = 3;
@@ -70,9 +73,9 @@ class Actor extends Engineer.Sprite
             this.Destroy();
             return;
         }
-        this._Weapon.Update();
+        if(this._Weapon) this._Weapon.Update();
         if(this._Possesed) return;
-        this._Behaviour.Act();
+        if(this._Behaviour) this._Behaviour.Act();
         // AI
     }
     private Destroy() : void
