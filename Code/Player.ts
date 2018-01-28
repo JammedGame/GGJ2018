@@ -19,6 +19,7 @@ class Player
     private _Movement:Movement;
     private _Scene:Engineer.Scene2D;
     private _Cooldown:number;
+    private _LevelComplete:Function;
     public get Actor():Actor { return this._Actor; }
     public set Actor(Value:Actor)
     {
@@ -27,10 +28,12 @@ class Player
         this._Actor = Value;
         this._Cooldown = 1000;
         this.ProjectActor(this._Actor);
+        if(Value.Terminal) this._LevelComplete()
     }
-    public constructor(Scene:Engineer.Scene2D)
+    public constructor(Scene:Engineer.Scene2D, LevelComplete:Function)
     {
         this._Scene = Scene;
+        this._LevelComplete = LevelComplete;
         this.Init();
     }
     public Init() : void
@@ -90,7 +93,7 @@ class Player
             let Offset = new Engineer.Vertex(15, -40, 0);
             Offset.RotateZ(this._Angle + 90);
             Loc.Translate(Offset);
-            this._Actor.Weapon.Fire(this._Angle, Loc, 0);
+            if(this._Actor.Weapon) this._Actor.Weapon.Fire(this._Angle, Loc, 0);
         }
         if (this._Movement.IsMoving()) {
             this._Actor.UpdateSpriteSetByName('walking');
