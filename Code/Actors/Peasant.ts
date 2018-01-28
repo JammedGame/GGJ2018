@@ -14,7 +14,7 @@ class Peasant extends Actor {
         this._Behaviour = new SniperBehaviour(null, this._Scene, this);
         this.Health = 20;
         this.MaxHealth = 20;
-        this.Weapon = new Weapon(Scene, 50, new Projectile(null, 3, 100, 1), '/Resources/Sounds/sniper_shot.wav');
+        this.Weapon = new Weapon(Scene, 25, new Projectile(null, 3, 30, 1), '/Resources/Sounds/sniper_shot.wav');
         if(!Peasant.Sets) Peasant.InitSets();
         this.SpriteSets = Peasant.Sets;
         this.SetSpriteSetByName('idle');  

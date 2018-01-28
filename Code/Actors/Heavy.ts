@@ -13,7 +13,7 @@ class Heavy extends Actor {
         this.Speed = 2;
         this.Health = 200;
         this.MaxHealth = 200;
-        this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 10), '/Resources/Sounds/machinegunshot.wav');
+        this.Weapon = new Weapon(Scene, 10, new Projectile(null, 5, 45), '/Resources/Sounds/machinegunshot.wav');
         if(!Heavy.Sets) Heavy.InitSets();
         this.SpriteSets = Heavy.Sets;
         this.SetSpriteSetByName('idle'); 
