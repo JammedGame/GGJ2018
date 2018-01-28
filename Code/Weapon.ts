@@ -3,6 +3,7 @@ export { Weapon }
 import Engineer from "./Engineer"
 
 import { Projectile } from "./Projectile";
+import { SoundObject } from "engineer-js";
 
 class Weapon
 {
@@ -13,13 +14,18 @@ class Weapon
     private _Projectiles:Projectile[];
     public get Done():boolean { return this._Projectiles.length == 0; }
     public get Projectiles():Projectile[] { return this._Projectiles; }
-    public constructor(Scene:Engineer.Scene2D ,FireRate:number, Projectile:Projectile)
+
+    private _Sound:SoundObject;
+
+    public constructor(Scene:Engineer.Scene2D ,FireRate:number, Projectile:Projectile, Sound:string)
     {
         this._Cooldown = 0;
         this._Scene = Scene;
         this._FireRate = FireRate;
         this._Projectile = Projectile;
         this._Projectiles = [];
+        this._Sound = new SoundObject(Sound);
+        this._Sound.Volume = 0.2;
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {
@@ -34,6 +40,7 @@ class Weapon
         NewProjectile.Fire(Angle - 90, Location, Owner);
         this._Scene.AddSceneObject(NewProjectile);
         this._Cooldown = this._FireRate;
+        this._Sound.Play();
     }
     public Update() : void
     {
