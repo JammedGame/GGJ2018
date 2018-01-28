@@ -83,7 +83,6 @@ class Effects
         explosion.Trans.Translation = new Engineer.Vertex(Location.X, Location.Y, 0.2);
         explosion.Events.SpriteSetAnimationComplete.push(() => {
             this._Scene.RemoveSceneObject(explosion);
-            console.log('removign bla bla);');
         });
 
         explosion.Trans.Scale = new Engineer.Vertex(450, 450, 3);
