@@ -146,7 +146,7 @@ class Level
                     {
                         Actor.Health -= Projectile.Damage;
                         Projectile.Duration = 0;
-                        this._Effects.GenerateSplash(Actor.Trans.Translation);
+                        this._Effects.GenerateSplash(Actor, Actor.Trans.Translation);
                     }
                 }
             }
@@ -168,7 +168,7 @@ class Level
                         this._Player.Actor.Health -= Projectile.Damage / 5;
                         Projectile.Duration = 0;
                         
-                        this._Effects.GenerateSplash(this._Player.ReprojectLocation());
+                        this._Effects.GenerateSplash(this._Player.Actor, this._Player.ReprojectLocation());
                     }
                 }
             }
