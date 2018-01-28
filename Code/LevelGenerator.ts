@@ -154,8 +154,8 @@ class LevelGenerator
             {
                 LO.Enemy.push({X:1, Y:LO.Location + i});
                 LO.Enemy.push({X:3, Y:LO.Location + i});
-                LO.Props.push({X:1, Y:LO.Location + i});
-                LO.Props.push({X:3, Y:LO.Location + i});
+                LO.Props.push({X:-1, Y:LO.Location + i});
+                LO.Props.push({X:5, Y:LO.Location + i});
             }
         }
         LO.Location += Length;
