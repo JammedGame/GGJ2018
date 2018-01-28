@@ -5,6 +5,7 @@ import Engineer from "./Engineer";
 import { Actor } from "./Actor";
 import { Level } from "./Level";
 import { HealthBar } from "./HealthBar";
+import { SoundObject } from "engineer-js";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -19,6 +20,7 @@ class Player
     private _Movement:Movement;
     private _Scene:Engineer.Scene2D;
     private _Cooldown:number;
+    private _TransmissionSound:SoundObject;
     public get Actor():Actor { return this._Actor; }
     public set Actor(Value:Actor)
     {
@@ -26,12 +28,14 @@ class Player
         if(this._Actor != null) this.ReprojectActor(this._Actor);
         this._Actor = Value;
         this._Cooldown = 1000;
+        this._TransmissionSound.Play();
         this.ProjectActor(this._Actor);
     }
     public constructor(Scene:Engineer.Scene2D)
     {
         this._Scene = Scene;
         this.Init();
+        this._TransmissionSound = new SoundObject('/Resources/Sounds/transmission.wav');
     }
     public Init() : void
     {
