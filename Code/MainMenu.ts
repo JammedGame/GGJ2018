@@ -33,6 +33,7 @@ class MainMenu extends Engineer.Scene2D
     {
         let Scene = new GameScene();
         this._Game.AddScene(Scene);
+        this._Runner.SetResolution(new Engineer.Vertex(1920, 1080, 0), true);
         this._Runner.SwitchScene("Game", false);
     }
 }
