@@ -63,4 +63,11 @@ class Effects
     {
         
     }
+    public Clear()
+    {
+        for(let i in this._ActiveSplashes)
+        {
+            this._Scene.RemoveSceneObject(this._ActiveSplashes[i]);
+        }
+    }
 }

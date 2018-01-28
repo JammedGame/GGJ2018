@@ -29,7 +29,8 @@ class GameScene extends Engineer.Scene2D
     }
     public LevelComplete() : void
     {
-        console.log("LVLCOMP");
+        this._Player.Reset();
+        this._Level.Reset();
     }
     private KeyPress(G: any, Args: any): void
     {

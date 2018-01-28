@@ -16,8 +16,25 @@ import { Effects } from "./Effects"
 
 const FIELD_SIZE = 500;
 
+let Level_Array =
+[
+    {L:1, Color:Engineer.Color.White},
+    {L:3, Color:Engineer.Color.FromString("#aa90ac")},
+    {L:5, Color:Engineer.Color.FromString("#7296bc")},
+    {L:7, Color:Engineer.Color.FromString("#e89765")},
+    {L:9, Color:Engineer.Color.FromString("#eccf8c")},
+    {L:12, Color:Engineer.Color.FromString("#9cc7be")},
+    {L:15, Color:Engineer.Color.FromString("#fc9f9f")},
+    {L:18, Color:Engineer.Color.FromString("#67d576")},
+    {L:20, Color:Engineer.Color.FromString("#828e9a")},
+    {L:22, Color:Engineer.Color.FromString("#c1e1e1")},
+    {L:25, Color:Engineer.Color.FromString("#b2b2b2")},
+    {L:30, Color:Engineer.Color.Red}
+];
+
 class Level
 {
+    private _LVLIndex:number;
     public static Single:Level;
     private _Actors:Actor[];
     private _Orphans:Weapon[];
@@ -30,16 +47,28 @@ class Level
     private _UpdateTarget:boolean;
     private _FloorColl:TileCollection;
     private _WallColl:TileCollection;
+    private _WallColor:Engineer.Color;
     public get Actors():Actor[] { return this._Actors; }
 
     private _Sounds: SoundObject[];
 
     public constructor(Scene:Engineer.Scene2D, Player:Player)
     {
+        this._LVLIndex = 0;
         this._Scene = Scene;
         this._Player = Player;
+        let Back = new Engineer.Tile();
+        Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
+        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
+        this._WallColl = new Engineer.TileCollection(null, ["/Resources/Textures/wall1.png"]);
+        Back.Index = 0;
+        Back.Trans.Translation = new Engineer.Vertex(960,540,0);
+        Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
+        Back.Fixed = true;
         this.Init();
         Level.Single = this;
+        this.InitSounds();
+        this._Scene.AddSceneObject(Back);
     }
     public Init() : void
     {
@@ -49,16 +78,8 @@ class Level
         this._Orphans = [];
         this._Props = [];
         this._Effects = new Effects(this._Scene);
-        let Back = new Engineer.Tile();
-        Back.Collection = new Engineer.TileCollection(null, ["/Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["/Resources/Textures/floor1.png"]);
-        this._WallColl = new Engineer.TileCollection(null, ["/Resources/Textures/wall1.png"]);
-        Back.Index = 0;
-        Back.Trans.Translation = new Engineer.Vertex(960,540,0);
-        Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
-        Back.Fixed = true;
-        this._Scene.AddSceneObject(Back);
-        let LO = LevelGenerator.Generate(1);
+        this._WallColor = Level_Array[this._LVLIndex].Color;
+        let LO = LevelGenerator.Generate(Level_Array[this._LVLIndex].L);
         for(let i = 0; i < LO.Rooms.length; i++)
         {
             this.CreateRoom(LO.Rooms[i]);
@@ -74,8 +95,27 @@ class Level
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
         this._Walls = this._Scene.GetObjectsWithData("Wall", true);
-
-        this.InitSounds();
+    }
+    public Reset()
+    {
+        for(let i in this._Floors) this._Scene.RemoveSceneObject(this._Floors[i]);
+        for(let i in this._Walls) this._Scene.RemoveSceneObject(this._Walls[i]);
+        for(let i in this._Props) this._Scene.RemoveSceneObject(this._Props[i]);
+        for(let i in this._Actors)
+        {
+            if(this._Actors[i].Weapon)
+            {
+                for(let j in this._Actors[i].Weapon.Projectiles)
+                {
+                    this._Scene.RemoveSceneObject(this._Actors[i].Weapon.Projectiles[j]);
+                }
+            }
+            this._Scene.RemoveSceneObject(this._Actors[i]);
+        }
+        this._Effects.Clear();
+        this._LVLIndex++;
+        console.log(this._Scene.Objects.length);
+        this.Init();
     }
     public InitSounds() : void
     {
@@ -334,7 +374,7 @@ class Level
         Floor.RepeatX = XSize;
         Floor.RepeatY = YSize;
         Floor.Index = 0;
-        //Floor.Paint = Engineer.Color.FromString("#F0E68C");
+        Floor.Paint = this._WallColor;
         Floor.Trans.Scale = new Engineer.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
         Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
         this._Floors.push(Floor);
