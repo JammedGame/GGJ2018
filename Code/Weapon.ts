@@ -25,7 +25,7 @@ class Weapon
         this._Projectile = Projectile;
         this._Projectiles = [];
         this._Sound = new SoundObject(Sound);
-        this._Sound.Volume = 0.2;
+        this._Sound.Volume = 0.1;
     }
     public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
     {

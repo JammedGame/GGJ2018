@@ -165,7 +165,7 @@ class Level
             .filter(actor => actor != this._Player.Actor && actor.Weapon)
             .reduce((c, actor) => actor.Weapon.Projectiles.length + c, 0);
         let myProjectiles = this._Player.Actor.Weapon ? this._Player.Actor.Weapon.Projectiles.length : 0;
-        sounds[0].Volume = Math.min(0.2, (totalProjectiles / 200));
+        sounds[0].Volume = Math.min(0.9, (totalProjectiles / 200));
         sounds[1].Volume =  Math.max(0.2, myProjectiles / 20);
     }
 
