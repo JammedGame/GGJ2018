@@ -15,6 +15,7 @@ import { TileCollection } from "engineer-js";
 import { Effects } from "./Effects"
 import { Peasant } from "./Actors/Peasant";
 import { Terminator } from "./Actors/Terminator";
+import { Doctor } from "./Actors/Doctor";
 
 const FIELD_SIZE = 500;
 
@@ -269,10 +270,11 @@ class Level
     private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
     {
         let NewActor = null;
-        let Index = LevelGenerator.Rand(1,5);
+        let Index = LevelGenerator.Rand(1,11);
         if(ActorClass == "Sniper") Index = 1;
         if(ActorClass == "Heavy") Index = 3;
         if(ActorClass == "Peasant") Index = 6;
+        if(ActorClass == "Doctor") Index = 8;
         if(ActorClass == "Terminator") Index = 10;
         if(ActorClass == "Terminal") Index = 11;
         if (Index == 1 || Index == 2)
@@ -283,9 +285,13 @@ class Level
         {
             NewActor = new Heavy(null, this._Scene, Location);
         }
-        else if(Index == 6 || Index == 7 || Index == 8 || Index == 9)
+        else if(Index == 6 || Index == 7)
         {
             NewActor = new Peasant(null, this._Scene, Location);
+        }
+        else if(Index == 8 || Index == 9)
+        {
+            NewActor = new Doctor(null, this._Scene, Location);
         }
         else if (Index == 10)
         {
