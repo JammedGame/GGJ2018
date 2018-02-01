@@ -45,6 +45,7 @@ class Player
     }
     public Init() : void
     {
+        this._Angle = 0;
         this._Shoot = false;
         this._Speed = 4;
         this._Cooldown = 0;

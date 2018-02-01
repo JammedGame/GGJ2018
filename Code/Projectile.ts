@@ -73,11 +73,13 @@ class Projectile extends Engineer.Tile
         {
             this._Angle = 180 - this._Angle;
             while(this._Angle < 0) this._Angle += 360;
+            this.Trans.Rotation.Z = this._Angle;
         }
         else if(this.Data["Collision_Wall"].Left || this.Data["Collision_Wall"].Right)
         {
             this._Angle = -this._Angle;
             while(this._Angle < 0) this._Angle += 360;
+            this.Trans.Rotation.Z = this._Angle;
         }
         let Direction:Engineer.Vertex = new Engineer.Vertex(0, this._Speed, 0);
         Direction.RotateZ(this._Angle);

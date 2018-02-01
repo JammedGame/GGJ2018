@@ -22,17 +22,17 @@ const FIELD_SIZE = 500;
 let Level_Array =
 [
     {L:1, Color:Engineer.Color.White},
-    {L:3, Color:Engineer.Color.FromString("#aa90ac")},
-    {L:5, Color:Engineer.Color.FromString("#7296bc")},
-    {L:7, Color:Engineer.Color.FromString("#e89765")},
-    {L:9, Color:Engineer.Color.FromString("#eccf8c")},
-    {L:12, Color:Engineer.Color.FromString("#9cc7be")},
-    {L:15, Color:Engineer.Color.FromString("#fc9f9f")},
-    {L:18, Color:Engineer.Color.FromString("#67d576")},
-    {L:20, Color:Engineer.Color.FromString("#828e9a")},
-    {L:22, Color:Engineer.Color.FromString("#c1e1e1")},
-    {L:25, Color:Engineer.Color.FromString("#b2b2b2")},
-    {L:30, Color:Engineer.Color.Red}
+    {L:2, Color:Engineer.Color.FromString("#aa90ac")},
+    {L:2, Color:Engineer.Color.FromString("#7296bc")},
+    {L:3, Color:Engineer.Color.FromString("#e89765")},
+    {L:3, Color:Engineer.Color.FromString("#eccf8c")},
+    {L:4, Color:Engineer.Color.FromString("#9cc7be")},
+    {L:4, Color:Engineer.Color.FromString("#fc9f9f")},
+    {L:5, Color:Engineer.Color.FromString("#67d576")},
+    {L:5, Color:Engineer.Color.FromString("#828e9a")},
+    {L:6, Color:Engineer.Color.FromString("#c1e1e1")},
+    {L:6, Color:Engineer.Color.FromString("#b2b2b2")},
+    {L:7, Color:Engineer.Color.Red}
 ];
 
 class Level
