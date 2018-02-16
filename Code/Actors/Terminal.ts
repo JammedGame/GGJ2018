@@ -23,9 +23,9 @@ class Terminal extends Actor
     private static Sets:Engineer.SpriteSet[];
     private static InitSets()
     {
-        let Idle = new SpriteSet(null, 'idle', [
+        let Idle = new SpriteSet(null, [
                 'Resources/Textures/console.png',
-            ])
+            ], 'idle')
         
         Terminal.Sets = [Idle];
     }

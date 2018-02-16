@@ -22,15 +22,15 @@ class Terminator extends Actor {
     private static Sets:Engineer.SpriteSet[];
     private static InitSets()
     {
-        let Walking = new SpriteSet(null, 'walking', [
+        let Walking = new SpriteSet(null, [
             'Resources/Textures/Actors/terminator01.png',
-        ])
+        ], 'walking')
 
         Walking.Seed = 5;
 
-        let Idle = new SpriteSet(null, 'idle', [
+        let Idle = new SpriteSet(null, [
                 'Resources/Textures/Actors/terminator01.png',
-            ])
+            ], 'idle')
         
             Terminator.Sets = [Walking, Idle];
     }

@@ -22,16 +22,16 @@ class Heavy extends Actor {
     private static Sets:Engineer.SpriteSet[];
     private static InitSets()
     {
-        let Walking = new SpriteSet(null, 'walking', [
+        let Walking = new SpriteSet(null, [
             'Resources/Textures/Actors/heavy04_01.png',
              //'Resources/Textures/Actors/heavy04_02.png'
-        ])
+        ], 'walking')
 
         Walking.Seed = 5;
 
-        let Idle = new SpriteSet(null, 'idle', [
+        let Idle = new SpriteSet(null, [
                 'Resources/Textures/Actors/heavy04_01.png',
-            ])
+            ], 'idle')
         
         Heavy.Sets = [Walking, Idle];
     }

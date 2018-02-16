@@ -2,7 +2,7 @@ export { Effects }
 
 import Engineer from "./Engineer";
 import { Actor } from "./Actor";
-import { TileCollection, SpriteSet, Sprite, Vertex } from "engineer-js";
+import { ImageCollection, SpriteSet, Sprite, Vertex } from "engineer-js";
 
 
 class Effects
@@ -13,7 +13,7 @@ class Effects
     private _ActiveSplashes:Engineer.Tile[];
     private _ActiveExplosions:Engineer.Sprite[];
     private _ExplosionSet:SpriteSet;
-    private _TileCollection:TileCollection;
+    private _ImageCollection:ImageCollection;
     public constructor(Scene:Engineer.Scene2D)
     {
         this._Scene = Scene;
@@ -24,13 +24,13 @@ class Effects
         this._Seed = 0;
         Effects.Single = this;
         this._ActiveSplashes = [];
-        this._TileCollection = new Engineer.TileCollection(null, [
+        this._ImageCollection = new Engineer.ImageCollection(null, [
             "Resources/Textures/Stains/Blood_1.png",
             "Resources/Textures/Stains/Blood_2.png",
             "Resources/Textures/Stains/Blood_5.png",
         ]);
 
-        this._ExplosionSet = new SpriteSet(null, 'walking', [
+        this._ExplosionSet = new SpriteSet(null, [
             'Resources/Textures/Explosion/Explosion_1.png',
             'Resources/Textures/Explosion/Explosion_2.png',
             'Resources/Textures/Explosion/Explosion_3.png',
@@ -41,7 +41,7 @@ class Effects
             'Resources/Textures/Explosion/Explosion_8.png',
             'Resources/Textures/Explosion/Explosion_9.png',
             'Resources/Textures/Explosion/Explosion_10.png',
-        ])
+        ], 'walking')
 
         this._ExplosionSet.Seed = 15;
     }
@@ -67,7 +67,7 @@ class Effects
     {
         let bloodTile = new Engineer.Tile();
         bloodTile.Trans.Translation = new Engineer.Vertex(Location.X, Location.Y, 0.2);
-        bloodTile.Collection = this._TileCollection;
+        bloodTile.Collection = this._ImageCollection;
         let size = (100 - actor.Health) * 3 
         bloodTile.Trans.Scale = new Engineer.Vertex(size, size, 0);
         bloodTile.Index = Math.round(2 * Math.random());

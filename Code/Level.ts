@@ -11,7 +11,7 @@ import { Terminal } from "./Actors/Terminal";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
 import { SoundObject } from "engineer-js";
-import { TileCollection } from "engineer-js";
+import { ImageCollection } from "engineer-js";
 import { Effects } from "./Effects"
 import { Peasant } from "./Actors/Peasant";
 import { Terminator } from "./Actors/Terminator";
@@ -48,8 +48,8 @@ class Level
     private _Props:Prop[];
     private _Effects:Effects;
     private _UpdateTarget:boolean;
-    private _FloorColl:TileCollection;
-    private _WallColl:TileCollection;
+    private _FloorColl:ImageCollection;
+    private _WallColl:ImageCollection;
     private _WallColor:Engineer.Color;
     public get Actors():Actor[] { return this._Actors; }
 
@@ -61,9 +61,9 @@ class Level
         this._Scene = Scene;
         this._Player = Player;
         let Back = new Engineer.Tile();
-        Back.Collection = new Engineer.TileCollection(null, ["Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.TileCollection(null, ["Resources/Textures/floor1.png"]);
-        this._WallColl = new Engineer.TileCollection(null, ["Resources/Textures/wall1.png"]);
+        Back.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/Cosmos_2.png"]);
+        this._FloorColl = new Engineer.ImageCollection(null, ["Resources/Textures/floor1.png"]);
+        this._WallColl = new Engineer.ImageCollection(null, ["Resources/Textures/wall1.png"]);
         Back.Index = 0;
         Back.Trans.Translation = new Engineer.Vertex(960,540,0);
         Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
@@ -97,7 +97,7 @@ class Level
         }
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
-        this._Walls = this._Scene.GetObjectsWithData("Wall", true);
+        this._Walls = <Engineer.Tile[]>this._Scene.GetObjectsWithData("Wall", true);
     }
     public Reset()
     {

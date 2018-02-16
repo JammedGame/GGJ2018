@@ -20,7 +20,7 @@ class Prop extends Engineer.Tile
 
 class Box extends Prop
 {
-    private static Collection = new Engineer.TileCollection(null, ["Resources/Textures/box.png"]);
+    private static Collection = new Engineer.ImageCollection(null, ["Resources/Textures/box.png"]);
     public constructor(Old?:Box, Location?:Engineer.Vertex)
     {
         super(Old, Location);
@@ -41,7 +41,7 @@ class Box extends Prop
 
 class Barrel extends Prop
 {
-    private static Collection = new Engineer.TileCollection(null, ["Resources/Textures/bure.png"]);
+    private static Collection = new Engineer.ImageCollection(null, ["Resources/Textures/bure.png"]);
     public constructor(Old?:Barrel, Location?:Engineer.Vertex)
     {
         super(Old, Location);

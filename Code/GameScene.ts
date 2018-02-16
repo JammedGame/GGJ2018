@@ -68,7 +68,7 @@ class GameScene extends Engineer.Scene2D
     private CreateOverlay() : void
     {
         let Tile = new Engineer.Tile();
-        Tile.Collection = new Engineer.TileCollection(null, ["Resources/Textures/overlay.png"]);
+        Tile.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/overlay.png"]);
         Tile.Index = 0;
         Tile.Fixed = true;
         Tile.Trans.Translation = new Engineer.Vertex(960,540,1.5);
@@ -77,7 +77,7 @@ class GameScene extends Engineer.Scene2D
         Tile.Active = false;
         this.AddSceneObject(Tile);
         let Tile1 = new Engineer.Tile();
-        Tile1.Collection = new Engineer.TileCollection(null, ["Resources/Textures/hint.png"]);
+        Tile1.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/hint.png"]);
         Tile1.Index = 0;
         Tile1.Fixed = true;
         Tile1.Trans.Translation = new Engineer.Vertex(1600,950,1.4);

@@ -6,8 +6,8 @@ import { GameScene } from "./GameScene";
 
 class MainMenu extends Engineer.Scene2D
 {
-    private _Game:any;
-    private _Runner:any;
+    private _Game:Engineer.Game;
+    private _Runner:Engineer.Runner;
     public constructor(Runner:any, Game:any)
     {
         super();
