@@ -18,7 +18,7 @@ class MainMenu extends Engineer.Scene2D
     public Init() : void
     {
         this.Name = "Menu";
-        let Buttons:any = new Engineer.TileCollection(null, ["Resources/Textures/Play.png"]);
+        let Buttons:any = new Engineer.ImageCollection(null, ["Resources/Textures/Play.png"]);
         let Play:any = new Engineer.Tile();
         Play.Name = "Play";
         Play.Collection = Buttons;
@@ -28,7 +28,7 @@ class MainMenu extends Engineer.Scene2D
         Play.Events.MouseDown.push(this.PlayClick.bind(this));
         this.AddSceneObject(Play);
         let Tile = new Engineer.Tile();
-        Tile.Collection = new Engineer.TileCollection(null, ["Resources/Textures/cover.png"]);
+        Tile.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/cover.png"]);
         Tile.Index = 0;
         Tile.Fixed = true;
         Tile.Trans.Translation = new Engineer.Vertex(960,540,0.0);

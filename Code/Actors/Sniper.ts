@@ -15,7 +15,7 @@ class Sniper extends Actor {
         this.Health = 80;
         this.MaxHealth = 80;
         this._Explosive = true;
-        this.Weapon = new Weapon(Scene, 50, new Projectile(null, 3, 150, 1), '/Resources/Sounds/sniper_shot.wav');
+        this.Weapon = new Weapon(Scene, 20, new Projectile(null, 8, 150, 1), '/Resources/Sounds/sniper_shot.wav');
         if(!Sniper.Sets) Sniper.InitSets();
         this.SpriteSets = Sniper.Sets;
         this.SetSpriteSetByName('idle');  
@@ -25,7 +25,7 @@ class Sniper extends Actor {
     {
         let Walking = new SpriteSet(null, [
             'Resources/Textures/Actors/sniper01_01.png',
-             //'Resources/Textures/Actors/sniper01_02.png'
+            'Resources/Textures/Actors/sniper01_02.png'
         ], 'walking')
 
         Walking.Seed = 5;

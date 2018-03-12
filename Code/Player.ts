@@ -47,7 +47,7 @@ class Player
     {
         this._Angle = 0;
         this._Shoot = false;
-        this._Speed = 4;
+        this._Speed = 10;
         this._Cooldown = 0;
         this._Movement = new Movement();
         this._Scene.Events.KeyDown.push(this.KeyDown.bind(this));
@@ -88,7 +88,7 @@ class Player
     public Reset()
     {
         this._Shoot = false;
-        this._Speed = 4;
+        this._Speed = 10;
         this._Cooldown = 0;
         this._Movement = new Movement();
         this._Actor = null;

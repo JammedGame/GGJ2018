@@ -43,7 +43,7 @@ class Effects
             'Resources/Textures/Explosion/Explosion_10.png',
         ], 'walking')
 
-        this._ExplosionSet.Seed = 15;
+        this._ExplosionSet.Seed = 7;
     }
     public CheckActiveSplashes()
     {
