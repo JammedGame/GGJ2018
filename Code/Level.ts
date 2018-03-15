@@ -137,7 +137,6 @@ class Level
         }
         this._Effects.Clear();
         this._LVLIndex=0;
-        console.log(this._Scene.Objects.length);
         this.Init();
     }
     public InitSounds() : void

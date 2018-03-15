@@ -56,6 +56,11 @@ class Player
         this._Scene.Events.MouseUp.push(this.MouseUp.bind(this));
         this._Scene.Events.MouseMove.push(this.MouseMove.bind(this));
         this._Scene.Events.TimeTick.push(this.Update.bind(this));
+        if(Engineer.Runner.Current.TouchscreenDevice())
+        {
+            Engineer.DPad.All[0].Press.push(this.DPadPress.bind(this));
+            Engineer.Analog.All[0].Press.push(this.AnalogPress.bind(this));
+        }
     }
     private KeyDown(Game:Engineer.Game, Args:any) : void
     {
@@ -83,7 +88,25 @@ class Player
     {
         let Zeroed = new Engineer.Vertex(Args.Location.X - SCREEN_WIDTH / 2, Args.Location.Y - SCREEN_HEIGHT / 2, 0);
         this._Angle = Engineer.Vertex.Angle(new Engineer.Vertex(0, 1, 0), Zeroed);
-        this._Actor.Trans.Rotation.Z = this._Angle;;
+        this._Actor.Trans.Rotation.Z = this._Angle;
+    }
+    private DPadPress(Directions:any) : void
+    {
+        this._Movement.Up = !!Directions.Up;
+        this._Movement.Down = !!Directions.Down;
+        this._Movement.Left = !!Directions.Left;
+        this._Movement.Right = !!Directions.Right;
+    }
+    private AnalogPress(Args:any) : void
+    {
+        if(!Args.Pressed)
+        {
+            this._Shoot = false;
+            return;
+        }
+        this._Angle = Args.Angle;
+        this._Actor.Trans.Rotation.Z = this._Angle;
+        this._Shoot = true;
     }
     public Reset()
     {

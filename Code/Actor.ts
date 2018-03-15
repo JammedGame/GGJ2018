@@ -58,7 +58,11 @@ class Actor extends Engineer.Sprite
         this.Trans.Scale = new Engineer.Vertex(110,110,1);
         this.Trans.Translation = Location.Copy();
         this._Weapon = new Weapon(Scene, 3, new Projectile(null, 10, 5), 'Resources/Sounds/machinegunshot.wav');
-        this.Events.MouseDown.push(this.OnClick.bind(this));
+        if(Engineer.Runner.Current.TouchscreenDevice)
+        {
+            this.Events.MouseDown.push(this.OnClick.bind(this));
+            this.Events.TouchStart.push(this.OnTouch.bind(this));
+        }
     }
     private OnClick(Game:Engineer.Game, Args:any) : boolean
     {
@@ -71,6 +75,15 @@ class Actor extends Engineer.Sprite
             }
         }
         else return false;
+    }
+    private OnTouch(Game:Engineer.Game, Args:any) : boolean
+    {
+        if(!this._Possesive) return false;
+        for(let i in this._OnActorPossesed)
+        {
+            this._OnActorPossesed[i](this);
+        }
+        return true;
     }
     public Update() : void
     {
