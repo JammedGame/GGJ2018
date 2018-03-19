@@ -100,6 +100,6 @@ class Actor extends Engineer.Sprite
     }
     private Destroy() : void
     {
-        this._Scene.RemoveSceneObject(this);
+        this._Scene.Remove(this);
     }
 }

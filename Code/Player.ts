@@ -55,7 +55,7 @@ class Player
         this._Scene.Events.MouseDown.push(this.MouseDown.bind(this));
         this._Scene.Events.MouseUp.push(this.MouseUp.bind(this));
         this._Scene.Events.MouseMove.push(this.MouseMove.bind(this));
-        this._Scene.Events.TimeTick.push(this.Update.bind(this));
+        this._Scene.Events.Update.push(this.Update.bind(this));
         if(Engineer.Runner.Current.TouchscreenDevice())
         {
             Engineer.DPad.All[0].Press.push(this.DPadPress.bind(this));

@@ -27,19 +27,19 @@ class HealthBar
         Hud.Fixed = true;
         Hud.Trans.Scale = new Engineer.Vertex(450,150,0);
         Hud.Trans.Translation = new Engineer.Vertex(this._BarLocation,950,1.2);
-        this._Scene.AddSceneObject(Hud);
+        this._Scene.Attach(Hud);
         this._Bar = new Engineer.Tile();
         this._Bar.Fixed = true;
         this._Bar.Paint = Engineer.Color.FromString("#613950");
         this._Bar.Trans.Scale = new Engineer.Vertex(BAR_WIDTH,50,0);
         this._Bar.Trans.Translation = new Engineer.Vertex(this._BarLocation + 50,950,1.1);
-        this._Scene.AddSceneObject(this._Bar);
+        this._Scene.Attach(this._Bar);
         this._CDWN = new Engineer.Tile();
         this._CDWN.Fixed = true;
         this._CDWN.Paint = Engineer.Color.FromString("#613950");
         this._CDWN.Trans.Scale = new Engineer.Vertex(90,CDWN_HEIGHT,0);
         this._CDWN.Trans.Translation = new Engineer.Vertex(this._BarLocation - 150,950,1.1);
-        this._Scene.AddSceneObject(this._CDWN);
+        this._Scene.Attach(this._CDWN);
     }
     public Update(Percent, Cooldown)
     {

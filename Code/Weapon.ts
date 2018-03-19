@@ -38,7 +38,7 @@ class Weapon
         NewProjectile.Data["Collision"] = Engineer.CollisionType.Radius2D;
         this._Projectiles.push(NewProjectile);
         NewProjectile.Fire(Angle - 90, Location, Owner);
-        this._Scene.AddSceneObject(NewProjectile);
+        this._Scene.Attach(NewProjectile);
         this._Cooldown = this._FireRate;
         this._Sound.Play();
     }
@@ -48,7 +48,7 @@ class Weapon
         {
             if(this._Projectiles[i].Duration == 0)
             {
-                this._Scene.RemoveSceneObject(this._Projectiles[i]);
+                this._Scene.Remove(this._Projectiles[i]);
                 this._Projectiles.splice(i,1);
             }
             else

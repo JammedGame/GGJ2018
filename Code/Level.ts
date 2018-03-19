@@ -71,7 +71,7 @@ class Level
         this.Init();
         Level.Single = this;
         this.InitSounds();
-        this._Scene.AddSceneObject(Back);
+        this._Scene.Attach(Back);
     }
     public Init() : void
     {
@@ -97,23 +97,23 @@ class Level
         }
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
-        this._Walls = <Engineer.Tile[]>this._Scene.GetObjectsWithData("Wall", true);
+        this._Walls = <Engineer.Tile[]>this._Scene.FindByData("Wall", true);
     }
     public Reset()
     {
-        for(let i in this._Floors) this._Scene.RemoveSceneObject(this._Floors[i]);
-        for(let i in this._Walls) this._Scene.RemoveSceneObject(this._Walls[i]);
-        for(let i in this._Props) this._Scene.RemoveSceneObject(this._Props[i]);
+        for(let i in this._Floors) this._Scene.Remove(this._Floors[i]);
+        for(let i in this._Walls) this._Scene.Remove(this._Walls[i]);
+        for(let i in this._Props) this._Scene.Remove(this._Props[i]);
         for(let i in this._Actors)
         {
             if(this._Actors[i].Weapon)
             {
                 for(let j in this._Actors[i].Weapon.Projectiles)
                 {
-                    this._Scene.RemoveSceneObject(this._Actors[i].Weapon.Projectiles[j]);
+                    this._Scene.Remove(this._Actors[i].Weapon.Projectiles[j]);
                 }
             }
-            this._Scene.RemoveSceneObject(this._Actors[i]);
+            this._Scene.Remove(this._Actors[i]);
         }
         this._Effects.Clear();
         this._LVLIndex++;
@@ -121,19 +121,19 @@ class Level
     }
     public ResetOver()
     {
-        for(let i in this._Floors) this._Scene.RemoveSceneObject(this._Floors[i]);
-        for(let i in this._Walls) this._Scene.RemoveSceneObject(this._Walls[i]);
-        for(let i in this._Props) this._Scene.RemoveSceneObject(this._Props[i]);
+        for(let i in this._Floors) this._Scene.Remove(this._Floors[i]);
+        for(let i in this._Walls) this._Scene.Remove(this._Walls[i]);
+        for(let i in this._Props) this._Scene.Remove(this._Props[i]);
         for(let i in this._Actors)
         {
             if(this._Actors[i].Weapon)
             {
                 for(let j in this._Actors[i].Weapon.Projectiles)
                 {
-                    this._Scene.RemoveSceneObject(this._Actors[i].Weapon.Projectiles[j]);
+                    this._Scene.Remove(this._Actors[i].Weapon.Projectiles[j]);
                 }
             }
-            this._Scene.RemoveSceneObject(this._Actors[i]);
+            this._Scene.Remove(this._Actors[i]);
         }
         this._Effects.Clear();
         this._LVLIndex=0;
@@ -303,7 +303,7 @@ class Level
         NewActor.OnActorPossesed.push(this.ActorPossesed.bind(this));
         NewActor.Paint = Color;
         this._Actors.push(NewActor);
-        this._Scene.AddSceneObject(NewActor);
+        this._Scene.Attach(NewActor);
     }
     private AddProp(Location:Engineer.Vertex, Color:Engineer.Color, PropClass?:String) : void
     {
@@ -323,7 +323,7 @@ class Level
         }
         NewProp.Paint = Color;
         this._Props.push(NewProp);
-        this._Scene.AddSceneObject(NewProp);
+        this._Scene.Attach(NewProp);
     }
     private ActorPossesed(Actor:Actor) : void
     {
@@ -432,7 +432,7 @@ class Level
             Wall.Trans.Translation = new Engineer.Vertex(Location.X + 25, Location.Y + Length * FIELD_SIZE/2 + 25, 0.5);
         }
         this._Walls.push(Wall);
-        this._Scene.AddSceneObject(Wall);
+        this._Scene.Attach(Wall);
     }
     private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
     {
@@ -445,6 +445,6 @@ class Level
         Floor.Trans.Scale = new Engineer.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
         Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
         this._Floors.push(Floor);
-        this._Scene.AddSceneObject(Floor);
+        this._Scene.Attach(Floor);
     }
 }

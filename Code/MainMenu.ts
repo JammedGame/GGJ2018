@@ -26,20 +26,20 @@ class MainMenu extends Engineer.Scene2D
         Play.Trans.Scale = new Engineer.Vertex(300, 150, 1);
         Play.Trans.Translation = new Engineer.Vertex(960, 930, 0.2);
         Play.Events.MouseDown.push(this.PlayClick.bind(this));
-        this.AddSceneObject(Play);
+        this.Attach(Play);
         let Tile = new Engineer.Tile();
         Tile.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/cover.png"]);
         Tile.Index = 0;
         Tile.Fixed = true;
         Tile.Trans.Translation = new Engineer.Vertex(960,540,0.0);
         Tile.Trans.Scale = new Engineer.Vertex(1920,1080,0);
-        this.AddSceneObject(Tile);
-        this._Game.AddScene(this);
+        this.Attach(Tile);
+        this._Game.Attach(this);
     }
     public PlayClick(G:any, Args:any) : void
     {
         let Scene = new GameScene();
-        this._Game.AddScene(Scene);
+        this._Game.Attach(Scene);
         this._Runner.SwitchScene("Game", false);
     }
 }

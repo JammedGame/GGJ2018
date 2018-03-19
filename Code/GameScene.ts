@@ -27,16 +27,16 @@ class GameScene extends Engineer.Scene2D
         this.BackColor = Engineer.Color.FromRGBA(0, 0, 0, 255);
         if(Engineer.Runner.Current.TouchscreenDevice())
         {
-            let DPad = new Engineer.DPad(null, new Engineer.Vertex(200,880,2), new Engineer.Vertex(250,250,1));
+            let DPad = new Engineer.DPad(null, new Engineer.Vertex(150,930,2), new Engineer.Vertex(400,400,1));
             DPad.SetColors(Engineer.Color.White, Engineer.Color.FromString("#F0E68C"));
-            this.AddSceneObject(DPad);
-            let Analog = new Engineer.Analog(null, new Engineer.Vertex(1720,880,2), new Engineer.Vertex(250,250,1));
+            this.Attach(DPad);
+            let Analog = new Engineer.Analog(null, new Engineer.Vertex(1770,930,2), new Engineer.Vertex(400,400,1));
             Analog.SetColors(Engineer.Color.White, Engineer.Color.FromString("#F0E68C"));
-            this.AddSceneObject(Analog);
+            this.Attach(Analog);
         }
         this._Player = new Player(this, this.LevelComplete.bind(this), this.GameOver.bind(this));
         this._Level = new Level(this, this._Player);
-        this.Events.TimeTick.push(this.SceneUpdate.bind(this));
+        this.Events.Update.push(this.SceneUpdate.bind(this));
         this.Events.KeyDown.push(this.KeyDown.bind(this));
         this.Events.KeyUp.push(this.KeyUp.bind(this));
         this.CreateOverlay();
@@ -84,7 +84,7 @@ class GameScene extends Engineer.Scene2D
         Tile.Trans.Scale = new Engineer.Vertex(1520,780,1);
         this._Overlay = Tile;
         Tile.Active = false;
-        if(!Engineer.Runner.Current.TouchscreenDevice()) this.AddSceneObject(Tile);
+        if(!Engineer.Runner.Current.TouchscreenDevice()) this.Attach(Tile);
         let Tile1 = new Engineer.Tile();
         Tile1.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/hint.png"]);
         Tile1.Index = 0;
@@ -92,6 +92,6 @@ class GameScene extends Engineer.Scene2D
         Tile1.Trans.Translation = new Engineer.Vertex(1600,950,1.4);
         Tile1.Trans.Scale = new Engineer.Vertex(320,80,1);
         this._OverlayPrompt = Tile1;
-        if(!Engineer.Runner.Current.TouchscreenDevice()) this.AddSceneObject(Tile1);
+        if(!Engineer.Runner.Current.TouchscreenDevice()) this.Attach(Tile1);
     }
 }

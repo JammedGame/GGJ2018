@@ -58,7 +58,7 @@ class Effects
             }
             else
             {
-                this._Scene.RemoveSceneObject(this._ActiveSplashes[i]);
+                this._Scene.Remove(this._ActiveSplashes[i]);
                 this._ActiveSplashes.splice(i,1);
             }
         }
@@ -73,7 +73,7 @@ class Effects
         bloodTile.Index = Math.round(2 * Math.random());
         bloodTile.Paint.A = 100;
         this._ActiveSplashes.push(bloodTile);
-        this._Scene.AddSceneObject(bloodTile);
+        this._Scene.Attach(bloodTile);
     }
     public GenerateExplosion(Location:Engineer.Vertex)
     {
@@ -81,18 +81,18 @@ class Effects
         explosion.SpriteSets.push(this._ExplosionSet);
         explosion.SetSpriteSet(0);
         explosion.Trans.Translation = new Engineer.Vertex(Location.X, Location.Y, 0.2);
-        explosion.Events.SpriteSetAnimationComplete.push(() => {
-            this._Scene.RemoveSceneObject(explosion);
+        explosion.Events.SetComplete.push(() => {
+            this._Scene.Remove(explosion);
         });
 
         explosion.Trans.Scale = new Engineer.Vertex(450, 450, 3);
-        this._Scene.AddSceneObject(explosion);
+        this._Scene.Attach(explosion);
     }
     public Clear()
     {
         for(let i in this._ActiveSplashes)
         {
-            this._Scene.RemoveSceneObject(this._ActiveSplashes[i]);
+            this._Scene.Remove(this._ActiveSplashes[i]);
         }
     }
 }
