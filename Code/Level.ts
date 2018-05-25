@@ -332,7 +332,7 @@ class Level
     public CheckCollision(Item:Engineer.DrawObject) : void
     {
         //Engineer.CollisionUtil.CalculateObjectCollisions("Wall", Item, this._Walls);
-        Item.Data["Collision_Wall"] = new Engineer.CollisionValue();
+        Item.Data["Collision_Wall"] = new Engineer.CollisionResult();
         let Collider1 = new Engineer.ColliderObject();
         Collider1 = Engineer.Convert.DrawObjectToCollider(Item);
         let Colliders = this._Walls;
@@ -342,13 +342,13 @@ class Level
             let CollisionValue = Engineer.Collision.Check(Collider1, Collider2);
             if(CollisionValue.Collision)
             {
-                Item.Data["Collision_Wall"] = Engineer.CollisionValue.Combine(Item.Data["Collision_Wall"], CollisionValue);
+                Item.Data["Collision_Wall"].Combine(CollisionValue);
             }
         }
     }
     public CheckPlayerCollision(Item:Engineer.DrawObject, Location:Engineer.Vertex) : void
     {
-        Item.Data["Collision_Wall"] = new Engineer.CollisionValue();
+        Item.Data["Collision_Wall"] = new Engineer.CollisionResult();
         let Collider1 = new Engineer.ColliderObject();
         Collider1.Position = Location;
         Collider1.Scale = Item.Trans.Scale;
@@ -360,7 +360,7 @@ class Level
             let CollisionValue = Engineer.Collision.Check(Collider1, Collider2);
             if(CollisionValue.Collision)
             {
-                Item.Data["Collision_Wall"] = Engineer.CollisionValue.Combine(Item.Data["Collision_Wall"], CollisionValue);
+                Item.Data["Collision_Wall"].Combine(CollisionValue);
             }
         }
     }
@@ -420,7 +420,7 @@ class Level
             Wall.RepeatY = Length * 10;
         }
         Wall.Data["Wall"] = true;
-        Wall.Data["Collision"] = Engineer.CollisionType.Rectangular2D;
+        Wall.Data["Collision"] = Engineer.CollisionType.Rectangular;
         if(Orientation == 0)
         {
             Wall.Trans.Scale = new Engineer.Vertex(Length * FIELD_SIZE + 50, 50, 1);

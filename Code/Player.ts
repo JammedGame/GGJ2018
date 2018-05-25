@@ -126,10 +126,10 @@ class Player
         }
         this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 200 - this._Cooldown);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
-        if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
-        if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
-        if(this._Movement.Left && !this._Actor.Data["Collision_Wall"].Left) this._Scene.Trans.Translation.X += this._Speed;
-        if(this._Movement.Right && !this._Actor.Data["Collision_Wall"].Right) this._Scene.Trans.Translation.X -= this._Speed;
+        if(this._Movement.Up && !this._Actor.Collision.Result.Top) this._Scene.Trans.Translation.Y += this._Speed;
+        if(this._Movement.Down && !this._Actor.Collision.Result.Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
+        if(this._Movement.Left && !this._Actor.Collision.Result.Left) this._Scene.Trans.Translation.X += this._Speed;
+        if(this._Movement.Right && !this._Actor.Collision.Result.Right) this._Scene.Trans.Translation.X -= this._Speed;
         if(!!this._Shoot)
         {
             let Loc = this.ReprojectLocation();

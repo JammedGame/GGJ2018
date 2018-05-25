@@ -54,7 +54,7 @@ class Actor extends Engineer.Sprite
         this._Possesive = true;
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);
-        this.Data["Collision"] = Engineer.CollisionType.Radius2D;
+        this.Collision.Type = Engineer.CollisionType.Radius;
         this.Trans.Scale = new Engineer.Vertex(110,110,1);
         this.Trans.Translation = Location.Copy();
         this._Weapon = new Weapon(Scene, 3, new Projectile(null, 10, 5), 'Resources/Sounds/machinegunshot.wav');

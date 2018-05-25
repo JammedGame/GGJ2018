@@ -44,7 +44,7 @@ class Projectile extends Engineer.Tile
     public Init(Index) : void
     {
         this.Trans.Scale = new Engineer.Vertex(42,42,1);
-        this.Data["Collision"] = Engineer.CollisionType.Radius2D;
+        this.Data["Collision"] = Engineer.CollisionType.Radius;
         this.Collection = Projectile.Collection;
         this.Index = Index;
         if(Index == 0)
