@@ -1,14 +1,15 @@
 export { Sniper }
 
+import * as TBX from "toybox-engine";
+
 import { Actor } from "../Actor";
-import { Scene2D, Vertex, SpriteSet } from "engineer-js";
 import { Weapon } from "../Weapon";
 import { Projectile } from "../Projectile";
 import { SniperBehaviour } from "../SniperBehaviour";
 
 class Sniper extends Actor {
 
-    public Init(Scene: Scene2D, Location: Vertex)
+    public Init(Scene: TBX.Scene2D, Location: TBX.Vertex)
     {
         super.Init(Scene, Location)
         this._Behaviour = new SniperBehaviour(null, this._Scene, this);
@@ -20,17 +21,17 @@ class Sniper extends Actor {
         this.SpriteSets = Sniper.Sets;
         this.SetSpriteSetByName('idle');  
     }
-    private static Sets:Engineer.SpriteSet[];
+    private static Sets:TBX.SpriteSet[];
     private static InitSets()
     {
-        let Walking = new SpriteSet(null, [
+        let Walking = new TBX.SpriteSet(null, [
             'Resources/Textures/Actors/sniper01_01.png',
             'Resources/Textures/Actors/sniper01_02.png'
         ], 'walking')
 
         Walking.Seed = 5;
 
-        let Idle = new SpriteSet(null, [
+        let Idle = new TBX.SpriteSet(null, [
                 'Resources/Textures/Actors/sniper01_01.png',
             ], 'idle')
         

@@ -1,6 +1,6 @@
 export { SniperBehaviour }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
@@ -9,7 +9,7 @@ import { LevelGenerator } from "./LevelGenerator";
 
 class SniperBehaviour extends Behaviour
 {
-    public constructor(Old?:SniperBehaviour, Scene?:Engineer.Scene2D, Actor?:Actor)
+    public constructor(Old?:SniperBehaviour, Scene?:TBX.Scene2D, Actor?:Actor)
     {
         super(Old, Scene, Actor);
         if(Old != null)
@@ -25,7 +25,7 @@ class SniperBehaviour extends Behaviour
     }
     public RadiusAct(Angle)
     {
-        let Direction = new Engineer.Vertex(0,-this._Actor.Speed,0);
+        let Direction = new TBX.Vertex(0,-this._Actor.Speed,0);
         Direction.RotateZ(Angle - 90);
         Level.Single.CheckCollision(this._Actor);
         if(this._Actor.Data["Collision_Wall"].Top || this._Actor.Data["Collision_Wall"].Bottom)
@@ -42,7 +42,7 @@ class SniperBehaviour extends Behaviour
     public SightAct(Angle)
     {
         let Loc = this._Actor.Trans.Translation.Copy();
-        let Offset = new Engineer.Vertex(15, -40, 0);
+        let Offset = new TBX.Vertex(15, -40, 0);
         Offset.RotateZ(Angle + 90);
         Loc.Translate(Offset);
         this._Actor.Weapon.Fire(Angle,Loc,1);

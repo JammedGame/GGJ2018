@@ -1,14 +1,15 @@
 export { Doctor }
 
+import * as TBX from "toybox-engine";
+
 import { Actor } from "../Actor";
-import { Scene2D, Vertex, SpriteSet } from "engineer-js";
 import { Weapon } from "../Weapon";
 import { Projectile } from "../Projectile";
 import { DoctorBehaviour } from "../DoctorBehaviour";
 
 class Doctor extends Actor {
 
-    public Init(Scene: Scene2D, Location: Vertex)
+    public Init(Scene: TBX.Scene2D, Location: TBX.Vertex)
     {
         super.Init(Scene, Location)
         this._Behaviour = new DoctorBehaviour(null, this._Scene, this);
@@ -19,16 +20,16 @@ class Doctor extends Actor {
         this.SpriteSets = Doctor.Sets;
         this.SetSpriteSetByName('idle');  
     }
-    private static Sets:Engineer.SpriteSet[];
+    private static Sets:TBX.SpriteSet[];
     private static InitSets()
     {
-        let Walking = new SpriteSet(null, [
+        let Walking = new TBX.SpriteSet(null, [
             'Resources/Textures/Actors/doctor_01.png',
         ], 'walking')
 
         Walking.Seed = 5;
 
-        let Idle = new SpriteSet(null, [
+        let Idle = new TBX.SpriteSet(null, [
             'Resources/Textures/Actors/doctor_01.png',
             ], 'idle')
         

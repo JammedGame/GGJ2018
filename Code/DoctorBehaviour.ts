@@ -1,6 +1,6 @@
 export { DoctorBehaviour }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
@@ -9,7 +9,7 @@ import { LevelGenerator } from "./LevelGenerator";
 
 class DoctorBehaviour extends Behaviour
 {
-    public constructor(Old?:DoctorBehaviour, Scene?:Engineer.Scene2D, Actor?:Actor)
+    public constructor(Old?:DoctorBehaviour, Scene?:TBX.Scene2D, Actor?:Actor)
     {
         super(Old, Scene, Actor);
         if(Old != null)
@@ -25,7 +25,7 @@ class DoctorBehaviour extends Behaviour
     }
     public RadiusAct(Angle)
     {
-        let Direction = new Engineer.Vertex(0,-this._Actor.Speed,0);
+        let Direction = new TBX.Vertex(0,-this._Actor.Speed,0);
         Direction.RotateZ(Angle - 90);
         Level.Single.CheckCollision(this._Actor);
         if(this._Actor.Data["Collision_Wall"].Top || this._Actor.Data["Collision_Wall"].Bottom)

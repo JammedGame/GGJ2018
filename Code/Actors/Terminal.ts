@@ -1,14 +1,15 @@
 export { Terminal }
 
+import * as TBX from "toybox-engine";
+
 import { Actor } from "../Actor";
-import { Scene2D, Vertex, SpriteSet } from "engineer-js";
 import { Weapon } from "../Weapon";
 import { Projectile } from "../Projectile";
 import { SniperBehaviour } from "../SniperBehaviour";
 
 class Terminal extends Actor
 {
-    public Init(Scene: Scene2D, Location: Vertex)
+    public Init(Scene: TBX.Scene2D, Location: TBX.Vertex)
     {
         super.Init(Scene, Location)
         this._Behaviour = null;
@@ -20,10 +21,10 @@ class Terminal extends Actor
         this.SpriteSets = Terminal.Sets;
         this.SetSpriteSetByName('idle');  
     }
-    private static Sets:Engineer.SpriteSet[];
+    private static Sets:TBX.SpriteSet[];
     private static InitSets()
     {
-        let Idle = new SpriteSet(null, [
+        let Idle = new TBX.SpriteSet(null, [
                 'Resources/Textures/console.png',
             ], 'idle')
         

@@ -1,6 +1,6 @@
 export { Behaviour }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
@@ -14,8 +14,8 @@ class Behaviour
     protected _Sight:number;
     protected _Radius:number;
     protected _Actor:Actor;
-    private _Scene:Engineer.Scene2D;
-    public constructor(Old?:Behaviour, Scene?:Engineer.Scene2D, Actor?:Actor)
+    private _Scene:TBX.Scene2D;
+    public constructor(Old?:Behaviour, Scene?:TBX.Scene2D, Actor?:Actor)
     {
         if(Old != null)
         {
@@ -37,10 +37,10 @@ class Behaviour
     public Act() : void
     {
         let TargetLoc = this.ReprojectLocation();
-        let SightSat:boolean = Engineer.Vertex.Distance(TargetLoc, this._Actor.Trans.Translation) < this._Sight;
-        let RadiusSat:boolean = Engineer.Vertex.Distance(TargetLoc, this._Actor.Trans.Translation) < this._Radius;
-        let Zeroed:Engineer.Vertex = new Engineer.Vertex(TargetLoc.X - this._Actor.Trans.Translation.X, TargetLoc.Y - this._Actor.Trans.Translation.Y, 0);
-        let Angle:number = Engineer.Vertex.Angle(new Engineer.Vertex(0, 1, 0), Zeroed);
+        let SightSat:boolean = TBX.Vertex.Distance(TargetLoc, this._Actor.Trans.Translation) < this._Sight;
+        let RadiusSat:boolean = TBX.Vertex.Distance(TargetLoc, this._Actor.Trans.Translation) < this._Radius;
+        let Zeroed:TBX.Vertex = new TBX.Vertex(TargetLoc.X - this._Actor.Trans.Translation.X, TargetLoc.Y - this._Actor.Trans.Translation.Y, 0);
+        let Angle:number = TBX.Vertex.Angle(new TBX.Vertex(0, 1, 0), Zeroed);
         if(SightSat)
         {
             this._Actor.Trans.Rotation.Z = Angle;
@@ -57,14 +57,14 @@ class Behaviour
     public RadiusAct(Angle)
     {
         let Loc = this._Actor.Trans.Translation.Copy();
-        let Offset = new Engineer.Vertex(15, -40, 0);
+        let Offset = new TBX.Vertex(15, -40, 0);
         Offset.RotateZ(Angle + 90);
         Loc.Translate(Offset);
         this._Actor.Weapon.Fire(Angle,Loc,1);
     }
     public SightAct(Angle)
     {
-        let Direction = new Engineer.Vertex(0,this._Actor.Speed,0);
+        let Direction = new TBX.Vertex(0,this._Actor.Speed,0);
         Direction.RotateZ(Angle - 90);
         Level.Single.CheckCollision(this._Actor);
         if(this._Actor.Data["Collision_Wall"].Top || this._Actor.Data["Collision_Wall"].Bottom)
@@ -78,9 +78,9 @@ class Behaviour
         this._Actor.Trans.Translation.X += Direction.X;
         this._Actor.Trans.Translation.Y += Direction.Y;
     }
-    private ReprojectLocation() : Engineer.Vertex
+    private ReprojectLocation() : TBX.Vertex
     {
-        let Reprojected:Engineer.Vertex = new Engineer.Vertex(0,0,0);
+        let Reprojected:TBX.Vertex = new TBX.Vertex(0,0,0);
         Reprojected.X = -this._Scene.Trans.Translation.X + SCREEN_WIDTH / 2 ;
         Reprojected.Y = -this._Scene.Trans.Translation.Y + SCREEN_HEIGHT / 2 ;
         Reprojected.Z = this._Actor.Trans.Translation.Z;

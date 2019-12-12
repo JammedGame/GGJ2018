@@ -1,6 +1,6 @@
 export { Level }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Player } from "./Player";
 import { LevelGenerator } from "./LevelGenerator";
@@ -10,8 +10,6 @@ import { Heavy } from "./Actors/Heavy";
 import { Terminal } from "./Actors/Terminal";
 import { Weapon } from "./Weapon";
 import { Prop, Box, Barrel } from "./Prop";
-import { SoundObject } from "engineer-js";
-import { ImageCollection } from "engineer-js";
 import { Effects } from "./Effects"
 import { Peasant } from "./Actors/Peasant";
 import { Terminator } from "./Actors/Terminator";
@@ -21,18 +19,18 @@ const FIELD_SIZE = 500;
 
 let Level_Array =
 [
-    {L:1, Color:Engineer.Color.White},
-    {L:2, Color:Engineer.Color.FromString("#aa90ac")},
-    {L:2, Color:Engineer.Color.FromString("#7296bc")},
-    {L:3, Color:Engineer.Color.FromString("#e89765")},
-    {L:3, Color:Engineer.Color.FromString("#eccf8c")},
-    {L:4, Color:Engineer.Color.FromString("#9cc7be")},
-    {L:4, Color:Engineer.Color.FromString("#fc9f9f")},
-    {L:5, Color:Engineer.Color.FromString("#67d576")},
-    {L:5, Color:Engineer.Color.FromString("#828e9a")},
-    {L:6, Color:Engineer.Color.FromString("#c1e1e1")},
-    {L:6, Color:Engineer.Color.FromString("#b2b2b2")},
-    {L:7, Color:Engineer.Color.Red}
+    {L:1, Color:TBX.Color.White},
+    {L:2, Color:TBX.Color.FromString("#aa90ac")},
+    {L:2, Color:TBX.Color.FromString("#7296bc")},
+    {L:3, Color:TBX.Color.FromString("#e89765")},
+    {L:3, Color:TBX.Color.FromString("#eccf8c")},
+    {L:4, Color:TBX.Color.FromString("#9cc7be")},
+    {L:4, Color:TBX.Color.FromString("#fc9f9f")},
+    {L:5, Color:TBX.Color.FromString("#67d576")},
+    {L:5, Color:TBX.Color.FromString("#828e9a")},
+    {L:6, Color:TBX.Color.FromString("#c1e1e1")},
+    {L:6, Color:TBX.Color.FromString("#b2b2b2")},
+    {L:7, Color:TBX.Color.Red}
 ];
 
 class Level
@@ -41,32 +39,32 @@ class Level
     public static Single:Level;
     private _Actors:Actor[];
     private _Orphans:Weapon[];
-    private _Scene:Engineer.Scene2D;
+    private _Scene:TBX.Scene2D;
     private _Player:Player;
-    private _Floors:Engineer.Tile[];
-    private _Walls:Engineer.Tile[];
+    private _Floors:TBX.Tile[];
+    private _Walls:TBX.Tile[];
     private _Props:Prop[];
     private _Effects:Effects;
     private _UpdateTarget:boolean;
-    private _FloorColl:ImageCollection;
-    private _WallColl:ImageCollection;
-    private _WallColor:Engineer.Color;
+    private _FloorColl:TBX.ImageCollection;
+    private _WallColl:TBX.ImageCollection;
+    private _WallColor:TBX.Color;
     public get Actors():Actor[] { return this._Actors; }
 
-    private _Sounds: SoundObject[];
+    private _Sounds: TBX.SoundObject[];
 
-    public constructor(Scene:Engineer.Scene2D, Player:Player)
+    public constructor(Scene:TBX.Scene2D, Player:Player)
     {
         this._LVLIndex = 0;
         this._Scene = Scene;
         this._Player = Player;
-        let Back = new Engineer.Tile();
-        Back.Collection = new Engineer.ImageCollection(null, ["Resources/Textures/Cosmos_2.png"]);
-        this._FloorColl = new Engineer.ImageCollection(null, ["Resources/Textures/floor1.png"]);
-        this._WallColl = new Engineer.ImageCollection(null, ["Resources/Textures/wall1.png"]);
+        let Back = new TBX.Tile();
+        Back.Collection = new TBX.ImageCollection(null, ["Resources/Textures/Cosmos_2.png"]);
+        this._FloorColl = new TBX.ImageCollection(null, ["Resources/Textures/floor1.png"]);
+        this._WallColl = new TBX.ImageCollection(null, ["Resources/Textures/wall1.png"]);
         Back.Index = 0;
-        Back.Trans.Translation = new Engineer.Vertex(960,540,0);
-        Back.Trans.Scale = new Engineer.Vertex(1920,1080,0);
+        Back.Trans.Translation = new TBX.Vertex(960,540,0);
+        Back.Trans.Scale = new TBX.Vertex(1920,1080,0);
         Back.Fixed = true;
         this.Init();
         Level.Single = this;
@@ -89,15 +87,15 @@ class Level
         }
         for(let i = 0; i < LO.Enemy.length; i++)
         {
-            this.AddActors(new Engineer.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White, LO.Enemy[i].Type);
+            this.AddActors(new TBX.Vertex(LO.Enemy[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Enemy[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), TBX.Color.White, LO.Enemy[i].Type);
         }
         for(let i = 0; i < LO.Props.length; i++)
         {
-            this.AddProp(new Engineer.Vertex(LO.Props[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Props[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), Engineer.Color.White);
+            this.AddProp(new TBX.Vertex(LO.Props[i].X * FIELD_SIZE + FIELD_SIZE / 2, LO.Props[i].Y * FIELD_SIZE + FIELD_SIZE / 2,1), TBX.Color.White);
         }
         this._Player.Actor = this._Actors[this._Actors.length - 1];
         this._UpdateTarget = true;
-        this._Walls = <Engineer.Tile[]>this._Scene.FindByData("Wall", true);
+        this._Walls = <TBX.Tile[]>this._Scene.FindByData("Wall", true);
     }
     public Reset()
     {
@@ -144,7 +142,7 @@ class Level
         let sounds = [
             'Resources/Sounds/fightpreparebassloop.mp3',
             'Resources/Sounds/fightdrumloop.mp3',
-        ].map(sound => new SoundObject(sound));
+        ].map(sound => new TBX.SoundObject(sound));
         
 
         sounds.forEach(sound => {
@@ -202,7 +200,7 @@ class Level
             for(let j in this._Actors[i].Weapon.Projectiles)
             {
                 let Projectile = this._Actors[i].Weapon.Projectiles[j];
-                if(Engineer.Vertex.Distance(Actor.Trans.Translation, Projectile.Trans.Translation) < 40)
+                if(TBX.Vertex.Distance(Actor.Trans.Translation, Projectile.Trans.Translation) < 40)
                 {
                     if(Projectile.Owner == 0)
                     {
@@ -223,7 +221,7 @@ class Level
             {
                 let PlayerLoc = this._Player.ReprojectLocation();
                 let Projectile = this._Actors[i].Weapon.Projectiles[j];
-                if(Engineer.Vertex.Distance(PlayerLoc, Projectile.Trans.Translation) < 40)
+                if(TBX.Vertex.Distance(PlayerLoc, Projectile.Trans.Translation) < 40)
                 {
                     if(Projectile.Owner != 0)
                     {
@@ -236,7 +234,7 @@ class Level
             }
         }
     }
-    private AddActors(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
+    private AddActors(Location:TBX.Vertex, Color:TBX.Color, ActorClass?:String) : void
     {
         if(ActorClass == "Terminator" || ActorClass == "Terminal" || ActorClass == "Heavy")
         {
@@ -266,7 +264,7 @@ class Level
             this.AddActor(Location.Copy(),Color,ActorClass);
         }
     }
-    private AddActor(Location:Engineer.Vertex, Color:Engineer.Color, ActorClass?:String) : void
+    private AddActor(Location:TBX.Vertex, Color:TBX.Color, ActorClass?:String) : void
     {
         let NewActor = null;
         let Index = LevelGenerator.Rand(1,11);
@@ -305,7 +303,7 @@ class Level
         this._Actors.push(NewActor);
         this._Scene.Attach(NewActor);
     }
-    private AddProp(Location:Engineer.Vertex, Color:Engineer.Color, PropClass?:String) : void
+    private AddProp(Location:TBX.Vertex, Color:TBX.Color, PropClass?:String) : void
     {
         let Chance = LevelGenerator.Rand(1,4);
         if(Chance != 1) return;
@@ -329,35 +327,39 @@ class Level
     {
         this._Player.Actor = Actor;
     }
-    public CheckCollision(Item:Engineer.DrawObject) : void
+    public CheckCollision(Item:TBX.DrawObject) : void
     {
-        //Engineer.CollisionUtil.CalculateObjectCollisions("Wall", Item, this._Walls);
-        Item.Data["Collision_Wall"] = new Engineer.CollisionResult();
-        let Collider1 = new Engineer.ColliderObject();
-        Collider1 = Engineer.Convert.DrawObjectToCollider(Item);
+        
+        TBX.CollisionUtil.CalculateCollisions(Item, this._Walls);
+        Item.Data["Collision_Wall"] = new TBX.CollisionResult();
+        let Collider1 = new TBX.ColliderObject();
+        Collider1.Type = Item.Collision.Type;
+        Collider1 = TBX.Convert.DrawObjectToCollider(Item);
         let Colliders = this._Walls;
         for(let i = 0; i < Colliders.length; i++)
         {
-            let Collider2 = Engineer.Convert.DrawObjectToCollider(Colliders[i]);
-            let CollisionValue = Engineer.Collision.Check(Collider1, Collider2);
+            let Collider2 = TBX.Convert.DrawObjectToCollider(Colliders[i]);
+            let CollisionValue = TBX.Collision.Check(Collider1, Collider2);
             if(CollisionValue.Collision)
             {
                 Item.Data["Collision_Wall"].Combine(CollisionValue);
             }
         }
     }
-    public CheckPlayerCollision(Item:Engineer.DrawObject, Location:Engineer.Vertex) : void
+    public CheckPlayerCollision(Item:TBX.DrawObject, Location:TBX.Vertex) : void
     {
-        Item.Data["Collision_Wall"] = new Engineer.CollisionResult();
-        let Collider1 = new Engineer.ColliderObject();
+        TBX.CollisionUtil.CalculateCollisions(Item, this._Walls);
+        Item.Data["Collision_Wall"] = new TBX.CollisionResult();
+        let Collider1 = new TBX.ColliderObject();
+        Collider1.Type = Item.Collision.Type;
         Collider1.Position = Location;
         Collider1.Scale = Item.Trans.Scale;
         Collider1.Type = Item.Data["Collision"];
         let Colliders = this._Walls;
         for(let i = 0; i < Colliders.length; i++)
         {
-            let Collider2 = Engineer.Convert.DrawObjectToCollider(Colliders[i]);
-            let CollisionValue = Engineer.Collision.Check(Collider1, Collider2);
+            let Collider2 = TBX.Convert.DrawObjectToCollider(Colliders[i]);
+            let CollisionValue = TBX.Collision.Check(Collider1, Collider2);
             if(CollisionValue.Collision)
             {
                 Item.Data["Collision_Wall"].Combine(CollisionValue);
@@ -366,19 +368,19 @@ class Level
     }
     private CreateRoom(Room:any)
     {
-        this.CreateFloor(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS, Room.YS);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS,0, Room.WT);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WL);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE + Room.YS * FIELD_SIZE,0), Room.XS,0, Room.WB);
-        this.CreateWall(new Engineer.Vertex(Room.X * FIELD_SIZE + Room.XS * FIELD_SIZE, Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WR);
+        this.CreateFloor(new TBX.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS, Room.YS);
+        this.CreateWall(new TBX.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.XS,0, Room.WT);
+        this.CreateWall(new TBX.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WL);
+        this.CreateWall(new TBX.Vertex(Room.X * FIELD_SIZE,Room.Y * FIELD_SIZE + Room.YS * FIELD_SIZE,0), Room.XS,0, Room.WB);
+        this.CreateWall(new TBX.Vertex(Room.X * FIELD_SIZE + Room.XS * FIELD_SIZE, Room.Y * FIELD_SIZE,0), Room.YS,1, Room.WR);
     }
-    private CreateWall(Location:Engineer.Vertex, Length:number, Orientation:number, Layout:number[]) : void
+    private CreateWall(Location:TBX.Vertex, Length:number, Orientation:number, Layout:number[]) : void
     {
         let Parts = this.FindParts(Layout);
         for(let i in Parts)
         {
-            if(Orientation == 0) this.CreateWallPart(new Engineer.Vertex(Location.X + Parts[i].S * FIELD_SIZE, Location.Y,0), Parts[i].L, Orientation);
-            else this.CreateWallPart(new Engineer.Vertex(Location.X, Location.Y + Parts[i].S * FIELD_SIZE, 0), Parts[i].L, Orientation);
+            if(Orientation == 0) this.CreateWallPart(new TBX.Vertex(Location.X + Parts[i].S * FIELD_SIZE, Location.Y,0), Parts[i].L, Orientation);
+            else this.CreateWallPart(new TBX.Vertex(Location.X, Location.Y + Parts[i].S * FIELD_SIZE, 0), Parts[i].L, Orientation);
         }
     }
     private FindParts(Layout:number[]) : any[]
@@ -405,11 +407,13 @@ class Level
         }
         return Parts;
     }
-    private CreateWallPart(Location:Engineer.Vertex, Length:number, Orientation:number) : void
+    private CreateWallPart(Location:TBX.Vertex, Length:number, Orientation:number) : void
     {
-        let Wall:Engineer.Tile = new Engineer.Tile();
-        //Wall.Paint = Engineer.Color.FromString("#111111");
+        let Wall:TBX.Tile = new TBX.Tile();
+        //Wall.Paint = TBX.Color.FromString("#111111");
         Wall.Collection = this._WallColl;
+        Wall.Collision.Active = true;
+        Wall.Collision.Type = TBX.CollisionType.Rectangular;
         Wall.Index = 0;
         if(Orientation == 0)
         {
@@ -420,30 +424,30 @@ class Level
             Wall.RepeatY = Length * 10;
         }
         Wall.Data["Wall"] = true;
-        Wall.Data["Collision"] = Engineer.CollisionType.Rectangular;
+        Wall.Data["Collision"] = TBX.CollisionType.Rectangular;
         if(Orientation == 0)
         {
-            Wall.Trans.Scale = new Engineer.Vertex(Length * FIELD_SIZE + 50, 50, 1);
-            Wall.Trans.Translation = new Engineer.Vertex(Location.X + Length * FIELD_SIZE/2 + 25, Location.Y + 25, 0.5);
+            Wall.Trans.Scale = new TBX.Vertex(Length * FIELD_SIZE + 50, 50, 1);
+            Wall.Trans.Translation = new TBX.Vertex(Location.X + Length * FIELD_SIZE/2 + 25, Location.Y + 25, 0.5);
         }
         else
         {
-            Wall.Trans.Scale = new Engineer.Vertex(50, Length * FIELD_SIZE + 50, 1);
-            Wall.Trans.Translation = new Engineer.Vertex(Location.X + 25, Location.Y + Length * FIELD_SIZE/2 + 25, 0.5);
+            Wall.Trans.Scale = new TBX.Vertex(50, Length * FIELD_SIZE + 50, 1);
+            Wall.Trans.Translation = new TBX.Vertex(Location.X + 25, Location.Y + Length * FIELD_SIZE/2 + 25, 0.5);
         }
         this._Walls.push(Wall);
         this._Scene.Attach(Wall);
     }
-    private CreateFloor(Location:Engineer.Vertex, XSize:number, YSize:number) : void
+    private CreateFloor(Location:TBX.Vertex, XSize:number, YSize:number) : void
     {
-        let Floor:Engineer.Tile = new Engineer.Tile();
+        let Floor:TBX.Tile = new TBX.Tile();
         Floor.Collection = this._FloorColl;
         Floor.RepeatX = XSize;
         Floor.RepeatY = YSize;
         Floor.Index = 0;
         Floor.Paint = this._WallColor;
-        Floor.Trans.Scale = new Engineer.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
-        Floor.Trans.Translation = new Engineer.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
+        Floor.Trans.Scale = new TBX.Vertex(XSize * FIELD_SIZE, YSize * FIELD_SIZE, 1);
+        Floor.Trans.Translation = new TBX.Vertex(Location.X + XSize*FIELD_SIZE/2, Location.Y + YSize*FIELD_SIZE/2, 0.1);
         this._Floors.push(Floor);
         this._Scene.Attach(Floor);
     }

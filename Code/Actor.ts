@@ -1,6 +1,6 @@
 export { Actor }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Weapon } from "./Weapon";
 import { Projectile } from "./Projectile";
@@ -8,7 +8,7 @@ import { Behaviour } from "./Behaviour";
 import { Sniper } from "./Actors/Sniper";
 import { Effects } from "./Effects";
 
-class Actor extends Engineer.Sprite
+class Actor extends TBX.Sprite
 {
     protected _Terminal:boolean;
     protected _Explosive:boolean;
@@ -19,7 +19,7 @@ class Actor extends Engineer.Sprite
     private _Target:Actor;
     private _Weapon:Weapon;
     protected _Behaviour:Behaviour;
-    protected _Scene:Engineer.Scene2D;
+    protected _Scene:TBX.Scene2D;
     protected _Possesive:boolean;
     private _OnActorPossesed:Function[];
     public get Terminal():boolean { return this._Terminal; }
@@ -38,12 +38,12 @@ class Actor extends Engineer.Sprite
     public set Weapon(Value:Weapon) { this._Weapon = Value; }
     public get OnActorPossesed():Function[] { return this._OnActorPossesed; }
     public set OnActorPossesed(Value:Function[]) { this._OnActorPossesed = Value; }
-    public constructor(Old?:Actor, Scene?:Engineer.Scene2D, Location?:Engineer.Vertex)
+    public constructor(Old?:Actor, Scene?:TBX.Scene2D, Location?:TBX.Vertex)
     {
         super(Old);
         this.Init(Scene, Location);
     }
-    public Init(Scene:Engineer.Scene2D, Location:Engineer.Vertex)
+    public Init(Scene:TBX.Scene2D, Location:TBX.Vertex)
     {
         this._Terminal = false;
         this._Health = 100;
@@ -54,20 +54,22 @@ class Actor extends Engineer.Sprite
         this._Possesive = true;
         this._OnActorPossesed = [];
         this._Behaviour = new Behaviour(null, Scene, this);
-        this.Collision.Type = Engineer.CollisionType.Radius;
-        this.Trans.Scale = new Engineer.Vertex(110,110,1);
+        this.Collision.Active = true;
+        this.Collision.Type = TBX.CollisionType.Radius;
+        this.Data["Collision"] = TBX.CollisionType.Radius;
+        this.Trans.Scale = new TBX.Vertex(110,110,1);
         this.Trans.Translation = Location.Copy();
         this._Weapon = new Weapon(Scene, 3, new Projectile(null, 10, 5), 'Resources/Sounds/machinegunshot.wav');
-        if(Engineer.Runner.Current.TouchscreenDevice)
+        if(TBX.Runner.Current.TouchscreenDevice)
         {
             this.Events.MouseDown.push(this.OnClick.bind(this));
             this.Events.TouchStart.push(this.OnTouch.bind(this));
         }
     }
-    private OnClick(Game:Engineer.Game, Args:any) : boolean
+    private OnClick(Game:TBX.Game, Args:any) : boolean
     {
         if(!this._Possesive) return false;
-        if(Args.MouseButton == Engineer.MouseButton.Right)
+        if(Args.MouseButton == TBX.MouseButton.Right)
         {
             for(let i in this._OnActorPossesed)
             {
@@ -76,7 +78,7 @@ class Actor extends Engineer.Sprite
         }
         else return false;
     }
-    private OnTouch(Game:Engineer.Game, Args:any) : boolean
+    private OnTouch(Game:TBX.Game, Args:any) : boolean
     {
         if(!this._Possesive) return false;
         for(let i in this._OnActorPossesed)

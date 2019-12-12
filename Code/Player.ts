@@ -1,11 +1,10 @@
 export { Player }
 
-import Engineer from "./Engineer";
+import * as TBX from "toybox-engine";
 
 import { Actor } from "./Actor";
 import { Level } from "./Level";
 import { HealthBar } from "./HealthBar";
-import { SoundObject } from "engineer-js";
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -18,9 +17,9 @@ class Player
     private _Speed:number;
     private _HealthBar:HealthBar;
     private _Movement:Movement;
-    private _Scene:Engineer.Scene2D;
+    private _Scene:TBX.Scene2D;
     private _Cooldown:number;
-    private _TransmissionSound:SoundObject;
+    private _TransmissionSound:TBX.SoundObject;
     private _LevelComplete:Function;
     private _GameOver:Function;
     public get Actor():Actor { return this._Actor; }
@@ -34,13 +33,13 @@ class Player
         this.ProjectActor(this._Actor);
         if(Value.Terminal) this._LevelComplete()
     }
-    public constructor(Scene:Engineer.Scene2D, LevelComplete:Function, GameOver:Function)
+    public constructor(Scene:TBX.Scene2D, LevelComplete:Function, GameOver:Function)
     {
         this._Scene = Scene;
         this._LevelComplete = LevelComplete;
         this._GameOver = GameOver;
         this.Init();
-        this._TransmissionSound = new SoundObject('Resources/Sounds/transmission.wav');
+        this._TransmissionSound = new TBX.SoundObject('Resources/Sounds/transmission.wav');
         this._HealthBar = new HealthBar(this._Scene);
     }
     public Init() : void
@@ -56,38 +55,38 @@ class Player
         this._Scene.Events.MouseUp.push(this.MouseUp.bind(this));
         this._Scene.Events.MouseMove.push(this.MouseMove.bind(this));
         this._Scene.Events.Update.push(this.Update.bind(this));
-        if(Engineer.Runner.Current.TouchscreenDevice())
+        if(TBX.Runner.Current.TouchscreenDevice())
         {
-            Engineer.DPad.All[0].Press.push(this.DPadPress.bind(this));
-            Engineer.Analog.All[0].Press.push(this.AnalogPress.bind(this));
+            TBX.DPad.All[0].Press.push(this.DPadPress.bind(this));
+            TBX.Analog.All[0].Press.push(this.AnalogPress.bind(this));
         }
     }
-    private KeyDown(Game:Engineer.Game, Args:any) : void
+    private KeyDown(Game:TBX.Game, Args:any) : void
     {
         if(Args.KeyCode == 87) this._Movement.Up = true;
         if(Args.KeyCode == 83) this._Movement.Down = true;
         if(Args.KeyCode == 65) this._Movement.Left = true;
         if(Args.KeyCode == 68) this._Movement.Right = true;
     }
-    private KeyUp(Game:Engineer.Game, Args:any) : void
+    private KeyUp(Game:TBX.Game, Args:any) : void
     {
         if(Args.KeyCode == 87) this._Movement.Up = false;
         if(Args.KeyCode == 83) this._Movement.Down = false;
         if(Args.KeyCode == 65) this._Movement.Left = false;
         if(Args.KeyCode == 68) this._Movement.Right = false;
     }
-    private MouseDown(Game:Engineer.Game, Args:any) : void
+    private MouseDown(Game:TBX.Game, Args:any) : void
     {
         this._Shoot = true;
     }
-    private MouseUp(Game:Engineer.Game, Args:any) : void
+    private MouseUp(Game:TBX.Game, Args:any) : void
     {
         this._Shoot = false;
     }  
-    private MouseMove(Game:Engineer.Game, Args:any) : void
+    private MouseMove(Game:TBX.Game, Args:any) : void
     {
-        let Zeroed = new Engineer.Vertex(Args.Location.X - SCREEN_WIDTH / 2, Args.Location.Y - SCREEN_HEIGHT / 2, 0);
-        this._Angle = Engineer.Vertex.Angle(new Engineer.Vertex(0, 1, 0), Zeroed);
+        let Zeroed = new TBX.Vertex(Args.Location.X - SCREEN_WIDTH / 2, Args.Location.Y - SCREEN_HEIGHT / 2, 0);
+        this._Angle = TBX.Vertex.Angle(new TBX.Vertex(0, 1, 0), Zeroed);
         this._Actor.Trans.Rotation.Z = this._Angle;
     }
     private DPadPress(Directions:any) : void
@@ -126,14 +125,14 @@ class Player
         }
         this._HealthBar.Update(this._Actor.Health / this._Actor.MaxHealth, 200 - this._Cooldown);
         Level.Single.CheckPlayerCollision(this._Actor, this.ReprojectLocation());
-        if(this._Movement.Up && !this._Actor.Collision.Result.Top) this._Scene.Trans.Translation.Y += this._Speed;
-        if(this._Movement.Down && !this._Actor.Collision.Result.Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
-        if(this._Movement.Left && !this._Actor.Collision.Result.Left) this._Scene.Trans.Translation.X += this._Speed;
-        if(this._Movement.Right && !this._Actor.Collision.Result.Right) this._Scene.Trans.Translation.X -= this._Speed;
+        if(this._Movement.Up && !this._Actor.Data["Collision_Wall"].Top) this._Scene.Trans.Translation.Y += this._Speed;
+        if(this._Movement.Down && !this._Actor.Data["Collision_Wall"].Bottom) this._Scene.Trans.Translation.Y -= this._Speed;
+        if(this._Movement.Left && !this._Actor.Data["Collision_Wall"].Left) this._Scene.Trans.Translation.X += this._Speed;
+        if(this._Movement.Right && !this._Actor.Data["Collision_Wall"].Right) this._Scene.Trans.Translation.X -= this._Speed;
         if(!!this._Shoot)
         {
             let Loc = this.ReprojectLocation();
-            let Offset = new Engineer.Vertex(15, -40, 0);
+            let Offset = new TBX.Vertex(15, -40, 0);
             Offset.RotateZ(this._Angle + 90);
             Loc.Translate(Offset);
             if(this._Actor.Weapon) this._Actor.Weapon.Fire(this._Angle, Loc, 0);
@@ -161,9 +160,9 @@ class Player
         this._Actor.Trans.Translation.X = -this._Scene.Trans.Translation.X + SCREEN_WIDTH / 2 ;
         this._Actor.Trans.Translation.Y = -this._Scene.Trans.Translation.Y + SCREEN_HEIGHT / 2 ;
     }
-    public ReprojectLocation() : Engineer.Vertex
+    public ReprojectLocation() : TBX.Vertex
     {
-        let Reprojected:Engineer.Vertex = new Engineer.Vertex(0,0,0);
+        let Reprojected:TBX.Vertex = new TBX.Vertex(0,0,0);
         Reprojected.X = -this._Scene.Trans.Translation.X + SCREEN_WIDTH / 2 ;
         Reprojected.Y = -this._Scene.Trans.Translation.Y + SCREEN_HEIGHT / 2 ;
         Reprojected.Z = this._Actor.Trans.Translation.Z;

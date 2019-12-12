@@ -1,11 +1,10 @@
 export { Projectile }
 
-import Engineer from "./Engineer"
-import { SpriteSet, ImageCollection } from "engineer-js";
+import * as TBX from "toybox-engine";
 
 import { Level } from "./Level";
 
-class Projectile extends Engineer.Tile
+class Projectile extends TBX.Tile
 {
     private _Owner:number;
     private _Speed:number;
@@ -40,24 +39,24 @@ class Projectile extends Engineer.Tile
     {
         return new Projectile(this);
     }
-    private static Collection = new ImageCollection(null, ['Resources/Textures/bullet.png', 'Resources/Textures/sniper_bullet.png']);
+    private static Collection = new TBX.ImageCollection(null, ['Resources/Textures/bullet.png', 'Resources/Textures/sniper_bullet.png']);
     public Init(Index) : void
     {
-        this.Trans.Scale = new Engineer.Vertex(42,42,1);
-        this.Data["Collision"] = Engineer.CollisionType.Radius;
+        this.Trans.Scale = new TBX.Vertex(42,42,1);
+        this.Data["Collision"] = TBX.CollisionType.Radius;
         this.Collection = Projectile.Collection;
         this.Index = Index;
         if(Index == 0)
         {
-            this.Trans.Scale = new Engineer.Vertex(20,20,1);
-            this.Paint = Engineer.Color.Maroon;
+            this.Trans.Scale = new TBX.Vertex(20,20,1);
+            this.Paint = TBX.Color.Maroon;
         }
         else {
-            this.Trans.Scale = new Engineer.Vertex(40,80,1);
-            this.Paint = Engineer.Color.Black;
+            this.Trans.Scale = new TBX.Vertex(40,80,1);
+            this.Paint = TBX.Color.Black;
         }
     }
-    public Fire(Angle:number, Location:Engineer.Vertex, Owner:number) : void
+    public Fire(Angle:number, Location:TBX.Vertex, Owner:number) : void
     {
         this._Angle = Angle;
         this._Owner = Owner;
@@ -81,7 +80,7 @@ class Projectile extends Engineer.Tile
             while(this._Angle < 0) this._Angle += 360;
             this.Trans.Rotation.Z = this._Angle;
         }
-        let Direction:Engineer.Vertex = new Engineer.Vertex(0, this._Speed, 0);
+        let Direction:TBX.Vertex = new TBX.Vertex(0, this._Speed, 0);
         Direction.RotateZ(this._Angle);
         this.Trans.Translation.X += Direction.X;
         this.Trans.Translation.Y += Direction.Y;

@@ -1,10 +1,10 @@
 export { Prop, Box, Barrel }
 
-import Engineer from "./Engineer"
+import * as TBX from "toybox-engine";
 
-class Prop extends Engineer.Tile
+class Prop extends TBX.Tile
 {
-    public constructor(Old?:Prop, Location?:Engineer.Vertex)
+    public constructor(Old?:Prop, Location?:TBX.Vertex)
     {
         super(Old);
         if(Old != null)
@@ -20,8 +20,8 @@ class Prop extends Engineer.Tile
 
 class Box extends Prop
 {
-    private static Collection = new Engineer.ImageCollection(null, ["Resources/Textures/box.png"]);
-    public constructor(Old?:Box, Location?:Engineer.Vertex)
+    private static Collection = new TBX.ImageCollection(null, ["Resources/Textures/box.png"]);
+    public constructor(Old?:Box, Location?:TBX.Vertex)
     {
         super(Old, Location);
         if(Old != null)
@@ -31,8 +31,8 @@ class Box extends Prop
         else
         {
             this.Data["Wall"] = true;
-            this.Data["Collision"] = Engineer.CollisionType.Rectangular;
-            this.Trans.Scale = new Engineer.Vertex(150,150,0);
+            this.Data["Collision"] = TBX.CollisionType.Rectangular;
+            this.Trans.Scale = new TBX.Vertex(150,150,0);
             this.Collection = Box.Collection;
             this.Index = 0;
         }
@@ -41,8 +41,8 @@ class Box extends Prop
 
 class Barrel extends Prop
 {
-    private static Collection = new Engineer.ImageCollection(null, ["Resources/Textures/bure.png"]);
-    public constructor(Old?:Barrel, Location?:Engineer.Vertex)
+    private static Collection = new TBX.ImageCollection(null, ["Resources/Textures/bure.png"]);
+    public constructor(Old?:Barrel, Location?:TBX.Vertex)
     {
         super(Old, Location);
         if(Old != null)
@@ -52,8 +52,8 @@ class Barrel extends Prop
         else
         {
             this.Data["Wall"] = true;
-            this.Data["Collision"] = Engineer.CollisionType.Radius;
-            this.Trans.Scale = new Engineer.Vertex(100,100,0);
+            this.Data["Collision"] = TBX.CollisionType.Radius;
+            this.Trans.Scale = new TBX.Vertex(100,100,0);
             this.Collection = Barrel.Collection;
             this.Index = 0;
         }
@@ -62,7 +62,7 @@ class Barrel extends Prop
 
 class ExplosiveBarrel extends Barrel
 {
-    public constructor(Old?:Barrel, Location?:Engineer.Vertex)
+    public constructor(Old?:Barrel, Location?:TBX.Vertex)
     {
         super(Old, Location);
         if(Old != null)
@@ -72,7 +72,7 @@ class ExplosiveBarrel extends Barrel
         else
         {
             this.Data["Wall"] = false;
-            this.Paint = Engineer.Color.Red;
+            this.Paint = TBX.Color.Red;
         }
     }
 }
